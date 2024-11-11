@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Tage Workout Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .pause {
+            background-color: #FFDDC1;
+            font-weight: bold;
+        }
+        .workout-day {
+            background-color: #D1E8E2;
+        }
+        .workout-day td {
+            color: #2c6e49;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>30-Tage Workout Plan</h1>
+    <table>
+        <tr>
+            <th>Tag</th>
+            <th>Liegestütze</th>
+            <th>Pause (Sek.) 1</th>
+            <th>Sit-Ups</th>
+            <th>Pause (Sek.) 2</th>
+            <th>Kniebeugen</th>
+            <th>Pause (Sek.) 3</th>
+            <th>Planks (Sek.)</th>
+            <th>Cardio (Min.)</th>
+        </tr>
+"""
+
+# Add rows from workout plan
+for index, row in workout_df.iterrows():
+    row_class = "pause" if row["Liegestütze"] == "Pause" else "workout-day"
+    html_content += f"""
+        <tr class="{row_class}">
+            <td>{row['Tag']}</td>
+            <td>{row['Liegestütze']}</td>
+            <td>{row['Pause (Sek.) 1']}</td>
+            <td>{row['Sit-Ups']}</td>
+            <td>{row['Pause (Sek.) 2']}</td>
+            <td>{row['Kniebeugen']}</td>
+            <td>{row['Pause (Sek.) 3']}</td>
+            <td>{row['Planks (Sek.)']}</td>
+            <td>{row['Cardio (Min.)']}</td>
+        </tr>
+    """
+
+html_content += """
+    </table>
+</body>
+</html>
+
