@@ -1,73 +1,5 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <link rel="icon" href="https://schnecke325.github.io/ttt-icon.png">
-        <meta charset="UTF-8">
-        <meta name="TicTacToe" content="width=device-width, initial-scale=1.0">
-        <title>Startseite</title>
-        <style>
-            /* Hintergrund-Animation */
-            @keyframes backgroundAnimation {
-                0% { background-color: #ff7f50; } /* Korallenfarbe */
-                50% { background-color: #00bfff; } /* Himmelblau */
-                100% { background-color: #ff7f50; } /* Zurück zur Korallenfarbe */
-            }
-
-            /* Allgemeines Styling für die Seite */
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-                font-family: Arial, sans-serif;
-                animation: backgroundAnimation 5s infinite alternate; /* Animation wird 5s lang wiederholt */
-            }
-
-            /* Container für den Button */
-            .button-container {
-                text-align: center;
-            }
-
-            /* Stil für den Button */
-            button {
-                padding: 20px 40px;
-                font-size: 24px;
-                cursor: pointer;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 10px;
-                transition: background-color 0.3s;
-            }
-
-            button:hover {
-                background-color: #45a049;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="button-container">
-            <a href="DEINE-URL-HIER"><button>Play</button></a>
-        </div>
-    </body>
-</html>
-Erklärungen:
-@keyframes backgroundAnimation: Diese CSS-Regel sorgt dafür, dass der Hintergrund von einer Farbe zur anderen übergeht. Du kannst die Farben nach Belieben anpassen.
-animation: Der Befehl im body sorgt dafür, dass der Hintergrund in einer Endlosschleife (infinite) zwischen den Farben wechselt. Der Wechsel dauert 5 Sekunden pro Zyklus (5s), und die Richtung wechselt bei jedem Zyklus (alternate).
-So bekommst du einen sanft animierten Hintergrund, der eine interessante visuelle Wirkung hat.
-
-
-Du:
-erstelle jezt ein neues dokument welches gezeigt wird wenn man auf play drück. in der mitte ein simples tik tak toe für 2 spiele. rechts wird score von spieler 2 angezeigt und links vom tic tak toe  der score von spieler 1. wenn ein spieler 5 mal hinter einander gewinnt ist das spie vorbei
-ChatGPT:
-ChatGPT
-Hier ist ein HTML-Dokument, das ein einfaches Tic-Tac-Toe-Spiel für zwei Spieler darstellt. Es enthält eine Spielfläche, Score-Anzeigen für beide Spieler und einen Mechanismus, der das Spiel beendet, wenn ein Spieler 5 Mal hintereinander gewonnen hat.
-
-html
-Kopieren
-<!DOCTYPE html>
-<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -194,6 +126,9 @@ Kopieren
                 if (player1Wins === 5 || player2Wins === 5) {
                     alert(`${currentPlayer} hat 5 Mal gewonnen! Das Spiel ist beendet.`);
                     gameOver = true;
+                    setTimeout(() => {
+                        window.location.href = "index.html";  // Zurück zur Startseite (index.html)
+                    }, 2000);  // 2 Sekunden warten, bevor zur Startseite gewechselt wird
                 }
                 currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
                 renderBoard();
@@ -217,17 +152,4 @@ Kopieren
                 }
             }
             return false;
-        }
-
-        // Neues Spiel starten
-        resetBtn.addEventListener('click', () => {
-            gameBoard = Array(9).fill(null);
-            gameOver = false;
-            currentPlayer = 'X';
-            renderBoard();
-        });
-
-        renderBoard();
-    </script>
-</body>
-</html>
+        
