@@ -40,7 +40,7 @@
 
         .game-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             width: 100%;
             max-width: 900px;
@@ -49,6 +49,14 @@
         }
 
         /* Score Anzeige */
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 20px;
+        }
+
         .score-board {
             font-size: 24px;
             padding: 20px;
@@ -134,18 +142,25 @@
             <p><strong>Spiel beenden:</strong> Das Spiel endet, wenn ein Spieler 5 Mal hintereinander gewonnen hat.</p>
         </div>
 
-        <div class="game-container">
-            <!-- Score Anzeige -->
+        <!-- Score Container mit beiden Scores -->
+        <div class="score-container">
+            <!-- Score Anzeige für Spieler 1 -->
             <div class="score-board" id="score1">
                 <h2>Spieler 1 (X)</h2>
                 <p>Gewinne: 0</p>
             </div>
+
+            <!-- Spielfeld -->
             <div class="game-board" id="board"></div>
+
+            <!-- Score Anzeige für Spieler 2 -->
             <div class="score-board" id="score2">
                 <h2>Spieler 2 (O)</h2>
                 <p>Gewinne: 0</p>
             </div>
         </div>
+
+        <!-- Reset Button -->
         <button class="button" id="resetBtn">Neues Spiel</button>
     </div>
 
