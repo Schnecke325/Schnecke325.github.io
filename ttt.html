@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
+    <title>Tic Tac Toe Spiel</title>
     <style>
         /* Allgemeines Styling */
         body {
@@ -15,10 +15,29 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            overflow: hidden;
+            position: relative;
         }
+
+        /* Hintergrund mit Blur-Effekt */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://source.unsplash.com/1600x900/?nature,water'); /* Beispielbild */
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px); /* Weicher Unscharf-Effekt */
+            z-index: -1; /* Hintergrund hinter den anderen Elementen */
+        }
+
         h1 {
             font-size: 32px;
+            z-index: 1;
         }
+
         .game-container {
             display: flex;
             justify-content: space-between;
@@ -26,7 +45,9 @@
             width: 100%;
             max-width: 900px;
             flex-direction: column;
+            z-index: 1;
         }
+
         /* Score Anzeige */
         .score-board {
             font-size: 24px;
@@ -37,9 +58,10 @@
             border: 2px solid #000;
             border-radius: 10px;
         }
+
         /* Box für Tastenbedingungen */
         .instructions-box {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.7); /* Transparente Box */
             border: 2px solid #333;
             border-radius: 10px;
             padding: 20px;
@@ -56,6 +78,7 @@
             margin-top: 10px;
             font-size: 18px;
         }
+
         /* Spielfeld */
         .game-board {
             display: grid;
@@ -79,6 +102,8 @@
         .cell:hover {
             background-color: #e0e0e0;
         }
+
+        /* Reset Button */
         .button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -95,6 +120,9 @@
     </style>
 </head>
 <body>
+    <!-- Hintergrund mit Blur-Effekt -->
+    <div class="background"></div>
+
     <h1>Tic Tac Toe</h1>
     <div class="game-container">
         <!-- Box für Tastenbedingungen -->
