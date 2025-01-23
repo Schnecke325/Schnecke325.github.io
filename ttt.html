@@ -188,10 +188,11 @@
                 cellElement.classList.add('cell');
                 if (cell === 'X') {
                     cellElement.classList.add('x'); // Klasse für blaues X
+                    cellElement.textContent = 'X';  // "X" wird angezeigt
                 } else if (cell === 'O') {
                     cellElement.classList.add('o'); // Klasse für rotes O
+                    cellElement.textContent = 'O';  // "O" wird angezeigt
                 }
-                cellElement.textContent = cell;
                 cellElement.addEventListener('click', () => handleClick(index));
                 board.appendChild(cellElement);
             });
