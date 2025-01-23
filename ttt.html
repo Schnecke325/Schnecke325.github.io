@@ -48,7 +48,7 @@
             z-index: 1;
         }
 
-        /* Score Anzeige */
+        /* Score Container */
         .score-container {
             display: flex;
             justify-content: space-between;
@@ -111,6 +111,14 @@
             background-color: #e0e0e0;
         }
 
+        /* Farben für X und O */
+        .cell.x {
+            color: blue; /* Blau für X */
+        }
+        .cell.o {
+            color: red; /* Rot für O */
+        }
+
         /* Reset Button */
         .button {
             margin-top: 20px;
@@ -159,9 +167,6 @@
                 <p>Gewinne: 0</p>
             </div>
         </div>
-
-        <!-- Reset Button -->
-        <button class="button" id="resetBtn">Neues Spiel</button>
     </div>
 
     <script>
@@ -174,7 +179,6 @@
         const score1 = document.getElementById('score1').querySelector('p');
         const score2 = document.getElementById('score2').querySelector('p');
         const board = document.getElementById('board');
-        const resetBtn = document.getElementById('resetBtn');
 
         // Spielfeld rendern
         function renderBoard() {
@@ -182,6 +186,11 @@
             gameBoard.forEach((cell, index) => {
                 const cellElement = document.createElement('div');
                 cellElement.classList.add('cell');
+                if (cell === 'X') {
+                    cellElement.classList.add('x'); // Klasse für blaues X
+                } else if (cell === 'O') {
+                    cellElement.classList.add('o'); // Klasse für rotes O
+                }
                 cellElement.textContent = cell;
                 cellElement.addEventListener('click', () => handleClick(index));
                 board.appendChild(cellElement);
@@ -201,15 +210,16 @@
                     player2Wins++;
                     score2.textContent = `Gewinne: ${player2Wins}`;
                 }
+                // Wenn ein Spieler 5 Mal gewonnen hat, beende das Spiel
                 if (player1Wins === 5 || player2Wins === 5) {
                     alert(`${currentPlayer} hat 5 Mal gewonnen! Das Spiel ist beendet.`);
-                    gameOver = true;
-                    setTimeout(() => {
-                        window.location.href = "index.html";  // Zurück zur Startseite (index.html)
-                    }, 2000);  // 2 Sekunden warten, bevor zur Startseite gewechselt wird
+                    return; // Spiel beenden
                 }
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                renderBoard();
+                // Starte neue Runde
+                setTimeout(() => {
+                    resetBoard(); // Reset das Spielfeld für die nächste Runde
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Nächster Spieler
+                }, 1000); // Warte 1 Sekunde bevor das neue Spiel beginnt
             } else {
                 currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             }
@@ -232,13 +242,12 @@
             return false;
         }
 
-        // Neues Spiel starten
-        resetBtn.addEventListener('click', () => {
+        // Reset das Spielfeld
+        function resetBoard() {
             gameBoard = Array(9).fill(null);
             gameOver = false;
-            currentPlayer = 'X';
             renderBoard();
-        });
+        }
 
         renderBoard();
     </script>
