@@ -23,6 +23,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+            max-width: 900px;
+            flex-direction: column;
         }
         /* Score Anzeige */
         .score-board {
@@ -34,11 +37,32 @@
             border: 2px solid #000;
             border-radius: 10px;
         }
+        /* Box für Tastenbedingungen */
+        .instructions-box {
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 900px;
+            text-align: center;
+        }
+        .instructions-box h3 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .instructions-box p {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        /* Spielfeld */
         .game-board {
             display: grid;
             grid-template-columns: repeat(3, 100px);
             grid-template-rows: repeat(3, 100px);
             gap: 5px;
+            justify-items: center;
         }
         .cell {
             width: 100px;
@@ -73,18 +97,29 @@
 <body>
     <h1>Tic Tac Toe</h1>
     <div class="game-container">
-        <!-- Score Anzeige -->
-        <div class="score-board" id="score1">
-            <h2>Spieler 1 (X)</h2>
-            <p>Gewinne: 0</p>
+        <!-- Box für Tastenbedingungen -->
+        <div class="instructions-box">
+            <h3>Spielanleitung</h3>
+            <p><strong>Spieler 1 (X):</strong> Beginnt das Spiel.</p>
+            <p><strong>Spieler 2 (O):</strong> Spielt danach.</p>
+            <p>Wähle ein Feld, indem du darauf klickst, um deinen Zug zu machen. Das Ziel ist es, drei deiner Zeichen in einer Reihe (horizontal, vertikal oder diagonal) zu haben.</p>
+            <p><strong>Spiel beenden:</strong> Das Spiel endet, wenn ein Spieler 5 Mal hintereinander gewonnen hat.</p>
         </div>
-        <div class="game-board" id="board"></div>
-        <div class="score-board" id="score2">
-            <h2>Spieler 2 (O)</h2>
-            <p>Gewinne: 0</p>
+
+        <div class="game-container">
+            <!-- Score Anzeige -->
+            <div class="score-board" id="score1">
+                <h2>Spieler 1 (X)</h2>
+                <p>Gewinne: 0</p>
+            </div>
+            <div class="game-board" id="board"></div>
+            <div class="score-board" id="score2">
+                <h2>Spieler 2 (O)</h2>
+                <p>Gewinne: 0</p>
+            </div>
         </div>
+        <button class="button" id="resetBtn">Neues Spiel</button>
     </div>
-    <button class="button" id="resetBtn">Neues Spiel</button>
 
     <script>
         let currentPlayer = 'X'; // Spieler X beginnt
@@ -152,4 +187,17 @@
                 }
             }
             return false;
-        
+        }
+
+        // Neues Spiel starten
+        resetBtn.addEventListener('click', () => {
+            gameBoard = Array(9).fill(null);
+            gameOver = false;
+            currentPlayer = 'X';
+            renderBoard();
+        });
+
+        renderBoard();
+    </script>
+</body>
+</html>
