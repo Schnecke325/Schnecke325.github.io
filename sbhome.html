@@ -6,19 +6,30 @@
         <meta name="TicTacToe" content="width=device-width, initial-scale=1.0">
         <title>Startseite</title>
         <style>
-            /* Einfaches Styling, um den Button zu zentrieren */
+            /* Hintergrund-Animation */
+            @keyframes backgroundAnimation {
+                0% { background-color: #ff7f50; } /* Korallenfarbe */
+                50% { background-color: #00bfff; } /* Himmelblau */
+                100% { background-color: #ff7f50; } /* Zurück zur Korallenfarbe */
+            }
+
+            /* Allgemeines Styling für die Seite */
             body {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
                 margin: 0;
-                background-color: #f0f0f0;
                 font-family: Arial, sans-serif;
+                animation: backgroundAnimation 5s infinite alternate; /* Animation wird 5s lang wiederholt */
             }
+
+            /* Container für den Button */
             .button-container {
                 text-align: center;
             }
+
+            /* Stil für den Button */
             button {
                 padding: 20px 40px;
                 font-size: 24px;
@@ -29,6 +40,7 @@
                 border-radius: 10px;
                 transition: background-color 0.3s;
             }
+
             button:hover {
                 background-color: #45a049;
             }
