@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <link rel="icon" href="https://schnecke325.github.io/ttt-icon.png">
+        <meta charset="UTF-8">
+        <meta name="TicTacToe" content="width=device-width, initial-scale=1.0">
+        <title>Startseite</title>
+        <style>
+            /* Hintergrund-Animation */
+            @keyframes backgroundAnimation {
+                0% { background-color: #ff7f50; } /* Korallenfarbe */
+                50% { background-color: #00bfff; } /* Himmelblau */
+                100% { background-color: #ff7f50; } /* Zurück zur Korallenfarbe */
+            }
+
+            /* Allgemeines Styling für die Seite */
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                animation: backgroundAnimation 5s infinite alternate; /* Animation wird 5s lang wiederholt */
+            }
+
+            /* Container für den Button */
+            .button-container {
+                text-align: center;
+            }
+
+            /* Stil für den Button */
+            button {
+                padding: 20px 40px;
+                font-size: 24px;
+                cursor: pointer;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="button-container">
+            <a href="DEINE-URL-HIER"><button>Play</button></a>
+        </div>
+    </body>
+</html>
+Erklärungen:
+@keyframes backgroundAnimation: Diese CSS-Regel sorgt dafür, dass der Hintergrund von einer Farbe zur anderen übergeht. Du kannst die Farben nach Belieben anpassen.
+animation: Der Befehl im body sorgt dafür, dass der Hintergrund in einer Endlosschleife (infinite) zwischen den Farben wechselt. Der Wechsel dauert 5 Sekunden pro Zyklus (5s), und die Richtung wechselt bei jedem Zyklus (alternate).
+So bekommst du einen sanft animierten Hintergrund, der eine interessante visuelle Wirkung hat.
+
+
+Du:
+erstelle jezt ein neues dokument welches gezeigt wird wenn man auf play drück. in der mitte ein simples tik tak toe für 2 spiele. rechts wird score von spieler 2 angezeigt und links vom tic tak toe  der score von spieler 1. wenn ein spieler 5 mal hinter einander gewinnt ist das spie vorbei
+ChatGPT:
+ChatGPT
+Hier ist ein HTML-Dokument, das ein einfaches Tic-Tac-Toe-Spiel für zwei Spieler darstellt. Es enthält eine Spielfläche, Score-Anzeigen für beide Spieler und einen Mechanismus, der das Spiel beendet, wenn ein Spieler 5 Mal hintereinander gewonnen hat.
+
+html
+Kopieren
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Spiel</title>
+    <style>
+        /* Allgemeines Styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            font-size: 32px;
+        }
+        .game-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* Score Anzeige */
+        .score-board {
+            font-size: 24px;
+            padding: 20px;
+            width: 150px;
+            text-align: center;
+            background-color: #ffffff;
+            border: 2px solid #000;
+            border-radius: 10px;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            background-color: #f9f9f9;
+            border: 2px solid #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cell:hover {
+            background-color: #e0e0e0;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div class="game-container">
+        <!-- Score Anzeige -->
+        <div class="score-board" id="score1">
+            <h2>Spieler 1 (X)</h2>
+            <p>Gewinne: 0</p>
+        </div>
+        <div class="game-board" id="board"></div>
+        <div class="score-board" id="score2">
+            <h2>Spieler 2 (O)</h2>
+            <p>Gewinne: 0</p>
+        </div>
+    </div>
+    <button class="button" id="resetBtn">Neues Spiel</button>
+
+    <script>
+        let currentPlayer = 'X'; // Spieler X beginnt
+        let gameBoard = Array(9).fill(null);
+        let player1Wins = 0;
+        let player2Wins = 0;
+        let gameOver = false;
+
+        const score1 = document.getElementById('score1').querySelector('p');
+        const score2 = document.getElementById('score2').querySelector('p');
+        const board = document.getElementById('board');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Spielfeld rendern
+        function renderBoard() {
+            board.innerHTML = '';
+            gameBoard.forEach((cell, index) => {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('cell');
+                cellElement.textContent = cell;
+                cellElement.addEventListener('click', () => handleClick(index));
+                board.appendChild(cellElement);
+            });
+        }
+
+        // Klick auf ein Feld
+        function handleClick(index) {
+            if (gameBoard[index] || gameOver) return;
+
+            gameBoard[index] = currentPlayer;
+            if (checkWinner()) {
+                if (currentPlayer === 'X') {
+                    player1Wins++;
+                    score1.textContent = `Gewinne: ${player1Wins}`;
+                } else {
+                    player2Wins++;
+                    score2.textContent = `Gewinne: ${player2Wins}`;
+                }
+                if (player1Wins === 5 || player2Wins === 5) {
+                    alert(`${currentPlayer} hat 5 Mal gewonnen! Das Spiel ist beendet.`);
+                    gameOver = true;
+                }
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                renderBoard();
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+
+        // Überprüfen, ob es einen Gewinner gibt
+        function checkWinner() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontale Reihen
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Vertikale Spalten
+                [0, 4, 8], [2, 4, 6] // Diagonalen
+            ];
+
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Neues Spiel starten
+        resetBtn.addEventListener('click', () => {
+            gameBoard = Array(9).fill(null);
+            gameOver = false;
+            currentPlayer = 'X';
+            renderBoard();
+        });
+
+        renderBoard();
+    </script>
+</body>
+</html>
