@@ -203,6 +203,8 @@
             if (gameBoard[index] || gameOver) return;
 
             gameBoard[index] = currentPlayer;
+            renderBoard(); // Update das Board nach jedem Zug
+
             if (checkWinner()) {
                 if (currentPlayer === 'X') {
                     player1Wins++;
@@ -221,6 +223,13 @@
                     resetBoard(); // Reset das Spielfeld für die nächste Runde
                     currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Nächster Spieler
                 }, 1000); // Warte 1 Sekunde bevor das neue Spiel beginnt
+            } else if (gameBoard.every(cell => cell !== null)) { // Überprüfen, ob alle Felder voll sind
+                // Kein Gewinner, aber alle Felder sind ausgefüllt
+                setTimeout(() => {
+                    alert("Unentschieden! Starte eine neue Runde.");
+                    resetBoard(); // Starte eine neue Runde
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Nächster Spieler
+                }, 1000);
             } else {
                 currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             }
