@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz – Fragenverlauf</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 30px; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
+        .question-block { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc; }
+        .correct { background-color: #d4edda; border-left: 5px solid green; }
+        .incorrect { background-color: #f8d7da; border-left: 5px solid red; }
+        h1, h2 { text-align: center; }
+        button { margin-top: 10px; padding: 8px 16px; background-color: #333366; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #555599; }
+        label { display: block; margin: 5px 0; }
+        .result { font-weight: bold; margin-top: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Quiz: Mittelalter & Reformation</h1>
+    <p>Beantworte die Fragen. Nach jeder Antwort erscheint die nächste Frage unterhalb.</p>
+    <div id="quiz-container"></div>
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "Welche Gruppen gehörten zur Dreiständelehre?",
+            options: ["Klerus, Adel, Bauern", "König, Händler, Sklaven", "Adel, Ritter, Bauern"],
+            answer: 0
+        },
+        {
+            question: "Was war eine typische Abgabe im Rahmen der Grundherrschaft?",
+            options: ["Rüstungspflicht", "Naturalabgabe", "Stimmrecht im Reichstag"],
+            answer: 1
+        },
+        {
+            question: "Was kennzeichnete das Lehenswesen?",
+            options: ["Alle waren gleichberechtigt", "Kirche war oberster Lehnsherr", "Treue gegen Landvergabe"],
+            answer: 2
+        },
+        {
+            question: "Wogegen wandte sich Martin Luther besonders?",
+            options: ["Bauernaufstände", "Ablasshandel", "Heilige Schriften"],
+            answer: 1
+        },
+        {
+            question: "Was forderten die Bauern in den Zwölf Artikeln?",
+            options: ["Mehr Lehen", "Freie Pfarrerwahl", "Weniger Krieg"],
+            answer: 1
+        },
+        {
+            question: "Was war der Ablasshandel?",
+            options: ["Verkauf von Kirchenämtern", "Vergebung von Sünden gegen Geld", "Zahlung für den Zugang zu Kirchen"],
+            answer: 1
+        },
+        {
+            question: "Was waren die 95 Thesen?",
+            options: ["Luthers Kritik am Ablasshandel", "Ein Gesetzeswerk der Kirche", "Die kirchliche Reform des Adels"],
+            answer: 0
+        },
+        {
+            question: "Was war das Ziel der Bauernkriege?",
+            options: ["Gleichberechtigung zwischen Adel und Bauern", "Veränderung der Steuerlast", "Abschaffung der Grundherrschaft"],
+            answer: 0
+        },
+        {
+            question: "Wer war der wichtigste Gegner Luthers während der Reformation?",
+            options: ["Papst Leo X.", "Karl V.", "Heinrich VIII."],
+            answer: 1
+        },
+        {
+            question: "Welcher Theologe war Luthers Vorläufer und Einfluss?",
+            options: ["Johann Eck", "Jan Hus", "Ulrich Zwingli"],
+            answer: 1
+        },
+        {
+            question: "Was war der Hauptauslöser für die Reformation?",
+            options: ["Die Entstehung des Humanismus", "Der Verkauf von Ablassbriefen", "Der Streit um die Kirchensteuer"],
+            answer: 1
+        },
+        {
+            question: "Was ist ein Lehen?",
+            options: ["Ein Stück Land, das gegen Treue und Dienste vergeben wird", "Ein Gesetz, das die Kirche erlässt", "Ein hohes Kirchenamt"],
+            answer: 0
+        },
+        {
+            question: "Welche Rolle spielte der Klerus im Mittelalter?",
+            options: ["Verwalter von Steuern", "Erzeuger von Gütern", "Religiöse und politische Führung"],
+            answer: 2
+        },
+        {
+            question: "Was bedeutet 'Feudalismus'?",
+            options: ["Ein System der Grundherrschaft und Lehen", "Ein System der freien Marktwirtschaft", "Ein System des Kirchenrechts"],
+            answer: 0
+        },
+        {
+            question: "Wie hieß der Papst, der die ersten Ablassbriefe verkaufte?",
+            options: ["Papst Leo X.", "Papst Urban II.", "Papst Gregor I."],
+            answer: 0
+        },
+        {
+            question: "Was war die Peasants' War?",
+            options: ["Der Aufstand der französischen Bauern", "Der Aufstand der deutschen Bauern", "Der Kampf der englischen Bauern gegen das Steuersystem"],
+            answer: 1
+        },
+        {
+            question: "Wann wurden die 95 Thesen veröffentlicht?",
+            options: ["1517", "1492", "1521"],
+            answer: 0
+        },
+        {
+            question: "Was ist der 'Vertrag von Augsburg'?",
+            options: ["Ein Friedensvertrag zwischen den europäischen Staaten", "Ein Vertrag zur Bekämpfung der Reformation", "Ein Vertrag, der die Religionsfreiheit im Heiligen Römischen Reich regelte"],
+            answer: 2
+        },
+        {
+            question: "Was war die Folge des Bauernkrieges?",
+            options: ["Die Bauern erhielten mehr Rechte", "Es kam zu einer Verschärfung der sozialen Hierarchie", "Die Bauern gewannen landwirtschaftliche Freiheiten"],
+            answer: 1
+        },
+        {
+            question: "Was war der Hintergrund des Ablasshandels?",
+            options: ["Er war ein Mittel zur Finanzierung des Petersdoms in Rom", "Er war die Grundlage für den Machtkampf der Kirche gegen das Heilige Römische Reich", "Er war eine Art Steuer für die Bauern"],
+            answer: 0
+        },
+        {
+            question: "Was passierte 1521 auf dem Reichstag zu Worms?",
+            options: ["Luther wurde exkommuniziert", "Die Reformation wurde offiziell anerkannt", "Luther trat als Papst zurück"],
+            answer: 0
+        },
+        {
+            question: "Wer war der bedeutendste Herrscher zur Zeit der Reformation?",
+            options: ["Karl V.", "Heinrich VIII.", "Franz I."],
+            answer: 0
+        },
+        {
+            question: "Was versteht man unter 'Humanismus'?",
+            options: ["Eine politische Bewegung der Reformation", "Die Wiederbelebung der klassischen antiken Kultur", "Ein religiöser Reformansatz"],
+            answer: 1
+        },
+        {
+            question: "Was war das Ziel der Gegenreformation?",
+            options: ["Die Festigung der katholischen Kirche und Bekämpfung des Protestantismus", "Die Schaffung einer neuen Form des Christentums", "Die Förderung der politischen Macht der Papsttum"],
+            answer: 0
+        },
+        {
+            question: "Was forderte die katholische Kirche zur Zeit der Reformation?",
+            options: ["Die Abschaffung des Ablasshandels", "Eine Reform der kirchlichen Strukturen", "Die Rückkehr zum wahren Glauben"],
+            answer: 2
+        },
+        {
+            question: "Was war das 'Konzil von Trient'?",
+            options: ["Ein Konzil zur Bekämpfung der Reformation", "Ein Treffen der europäischen Könige", "Ein Treffen der wichtigsten Kirchenführer zur Klärung von Glaubensfragen"],
+            answer: 0
+        },
+        {
+            question: "Welche wichtige Rolle spielte Johannes Gutenberg?",
+            options: ["Er erfand die Druckerpresse", "Er reformierte die katholische Kirche", "Er verbreitete die Thesen Luthers"],
+            answer: 0
+        },
+        {
+            question: "Was war der 'Westfälische Frieden'?",
+            options: ["Ein Friedensvertrag, der den 30-jährigen Krieg beendete", "Ein Vertrag zwischen dem Papst und den protestantischen Fürsten", "Ein Vertrag, der die Rechte der Bauern sicherte"],
+            answer: 0
+        }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showNextQuestion() {
+        if (current >= questions.length) {
+            document.getElementById("result").innerText =
+                `Du hast ${score} von ${questions.length} Fragen richtig beantwortet.`;
+            return;
+        }
+
+        const q = questions[current];
+        const container = document.getElementById("quiz-container");
+
+        const block = document.createElement("div");
+        block.className = "question-block";
+
+        const html = `
+            <h2>Frage ${current + 1}</h2>
+            <p>${q.question}</p>
+            ${q.options.map((opt, i) => `
+                <label><input type="radio" name="q${current}" value="${i}"> ${opt}</label>
+            `).join('')}
+            <button onclick="checkAnswer(${q.answer}, ${current})">Weiter</button>
+        `;
+
+        block.innerHTML = html;
+        container.appendChild(block);
+        current++;
+    }
+
+    function checkAnswer(correct, questionIndex) {
+        const selected = document.querySelector(`input[name="q${questionIndex}"]:checked`);
+        if (!selected) {
+            alert("Bitte eine Antwort auswählen.");
+            return;
+        }
+
+        const block = document.querySelector(`.question-block:nth-child(${questionIndex + 1})`);
+        
+        if (parseInt(selected.value) === correct) {
+            score++;
+            block.classList.add("correct");
+        } else {
+            block.classList.add("incorrect");
+        }
+
+        // Deaktiviere Radio-Buttons und Button nach Auswahl
+        const radios = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+        radios.forEach(radio => radio.disabled = true);
+
+        const button = block.querySelector("button");
+        button.disabled = true;
+        showNextQuestion();
+    }
+
+    // Start the quiz
+    showNextQuestion();
+</script>
+</body>
+</html>
