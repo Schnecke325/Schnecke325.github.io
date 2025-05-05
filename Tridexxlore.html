@@ -1,129 +1,101 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tridexx – Die Zukunft des deutschen Schienenverkehrs</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIdexx Mobility – Dreifach neue Mobilität</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      color: #222;
+    }
+    header {
+      background-color: #c8002c;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    nav {
+      background-color: #333;
+      color: white;
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      padding: 0.5em;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+    main {
+      padding: 2em;
+      max-width: 900px;
+      margin: auto;
+      background-color: white;
+    }
+    footer {
+      background-color: #c8002c;
+      color: white;
+      text-align: center;
+      padding: 1em;
+      margin-top: 2em;
+    }
+  </style>
+  <script>
+    // Sprachumschaltung basierend auf dem Land
+    fetch("https://ipapi.co/country/")
+      .then(response => response.text())
+      .then(country => {
+        if (country !== "DE") {
+          window.location.href = "en.html";
+        }
+      });
+  </script>
 </head>
 <body>
-
-    <!-- Navigationsleiste -->
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#technische-daten">Technische Daten</a></li>
-            <li><a href="#design">Design & Komfort</a></li>
-            <li><a href="#innovation">Technologie & Nachhaltigkeit</a></li>
-            <li><a href="#einsatzgebiete">Einsatzgebiete</a></li>
-            <li><a href="#geschichte">Die Geschichte des Tridexx</a></li>
-            <li><a href="#kontakt">Kontakt</a></li>
-        </ul>
-    </nav>
-
-    <!-- Startseite -->
-    <section id="home">
-        <h1>Willkommen beim Tridexx 🚆</h1>
-        <p>Der weltweit erste dreistöckige Hochgeschwindigkeitszug, entwickelt mit deutscher Ingenieurskunst und modernster Technologie.</p>
+  <header>
+    <h1>TRIdexx Mobility</h1>
+    <p>Eine neue Dimension des Regionalverkehrs</p>
+  </header>
+  <nav>
+    <a href="#features">Merkmale</a>
+    <a href="#daten">Technische Daten</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+  <main>
+    <section id="features">
+      <h2>Hauptmerkmale</h2>
+      <ul>
+        <li>3 Passagierdecks mit SmartFlow-Steuerung</li>
+        <li>Bis zu 1.220 Sitzplätze pro Zug</li>
+        <li>Max. Geschwindigkeit: 200 km/h</li>
+        <li>Barrierefreier Zugang auf allen Ebenen</li>
+        <li>5G-Rückgrat und Live-Auslastung</li>
+      </ul>
     </section>
 
-    <!-- Inhaltsverzeichnis -->
-    <section id="inhaltsverzeichnis">
-        <h2>📌 Inhaltsverzeichnis</h2>
-        <ul>
-            <li><a href="#technische-daten">Technische Daten</a></li>
-            <li><a href="#design">Innovatives Design</a></li>
-            <li><a href="#innovation">Technologie & Nachhaltigkeit</a></li>
-            <li><a href="#einsatzgebiete">Einsatzgebiete & Strecken</a></li>
-            <li><a href="#geschichte">Die Geschichte des Tridexx</a></li>
-            <li><a href="#kontakt">Kontakt & Informationen</a></li>
-        </ul>
+    <section id="daten">
+      <h2>Technische Daten</h2>
+      <table>
+        <tr><td>Länge:</td><td>175,4 m</td></tr>
+        <tr><td>Höhe:</td><td>6,30 m</td></tr>
+        <tr><td>Leistung:</td><td>2.200 kW</td></tr>
+        <tr><td>Etagen:</td><td>3</td></tr>
+        <tr><td>Plätze:</td><td>1.220 Sitzplätze</td></tr>
+      </table>
     </section>
 
-    <!-- Technische Daten -->
-    <section id="technische-daten">
-        <h2>🔹 Technische Daten</h2>
-        <ul>
-            <li><strong>Baureihe:</strong> Tridexx 2045</li>
-            <li><strong>Hersteller:</strong> Siemens Mobility & Alstom Deutschland</li>
-            <li><strong>Geschwindigkeit (Vmax):</strong> 200 km/h</li>
-            <li><strong>Antrieb:</strong> Hybrid-System (Oberleitung + Akku + Wasserstoff-Brennstoffzelle)</li>
-            <li><strong>Leistung:</strong> 8.500 kW</li>
-            <li><strong>Sitzkapazität:</strong> 1.250–1.800 Passagiere</li>
-            <li><strong>Besondere Innovation:</strong> Vertikale Schnellaufzüge</li>
-        </ul>
-    </section>
-
-    <!-- Design & Komfort -->
-    <section id="design">
-        <h2>🔹 Design & Komfort</h2>
-        <p>Der Tridexx setzt neue Maßstäbe mit drei Ebenen für unterschiedliche Reiseerlebnisse:</p>
-        <ul>
-            <li>🛋 <strong>Ebene 1:</strong> Standardklasse mit ergonomischen Sitzen und High-Speed WLAN</li>
-            <li>🏢 <strong>Ebene 2:</strong> Business-Zone mit Konferenzräumen und Augmented-Reality-Fenstern</li>
-            <li>🌅 <strong>Ebene 3:</strong> Panorama-Deck mit Glasdach für spektakuläre Aussichten</li>
-        </ul>
-    </section>
-
-    <!-- Technologie & Nachhaltigkeit -->
-    <section id="innovation">
-        <h2>🔹 Technologie & Nachhaltigkeit</h2>
-        <ul>
-            <li>✔ Aerodynamisches Design für maximale Energieeffizienz</li>
-            <li>✔ Smart-Ticketing-System mit Echtzeitplatzreservierung</li>
-            <li>✔ Automatische Fahrdynamikoptimierung für stabile Hochgeschwindigkeitsfahrten</li>
-        </ul>
-    </section>
-
-    <!-- Einsatzgebiete -->
-    <section id="einsatzgebiete">
-        <h2>🗺 Einsatzgebiete</h2>
-        <ul>
-            <li>📍 Berlin – Hamburg – München</li>
-            <li>📍 Frankfurt – Stuttgart – Zürich</li>
-            <li>📍 Köln – Brüssel – Amsterdam</li>
-        </ul>
-    </section>
-
-    <!-- Die Geschichte des Tridexx -->
-    <section id="geschichte">
-        <h2>📜 Die Geschichte des Tridexx</h2>
-        <p>Der Tridexx ist das Ergebnis jahrzehntelanger Forschung und deutscher Ingenieurskunst.</p>
-        <h3>1️⃣ Die Herausforderung der Zukunft</h3>
-        <p>In den 2030er Jahren wurde klar, dass Doppelstockzüge nicht mehr ausreichten, um das steigende Fahrgastaufkommen zu bewältigen.</p>
-
-        <h3>2️⃣ Die Geburt der Idee</h3>
-        <p>Siemens Mobility, Alstom Deutschland und das DB Innovationszentrum entwickelten das Konzept eines dreistöckigen Zuges.</p>
-
-        <h3>3️⃣ Technische Meisterleistungen</h3>
-        <ul>
-            <li>✅ Aerodynamische Stromlinienform für hohe Effizienz</li>
-            <li>✅ Hybridantrieb für emissionsfreies Reisen</li>
-            <li>✅ Adaptive Stabilisierungstechnologie</li>
-            <li>✅ Neue Bahnhofsplattformen für besseren Zugang</li>
-        </ul>
-
-        <h3>4️⃣ Revolutionäres Design</h3>
-        <p>Der Tridexx vereint Komfort und moderne Architektur mit Panorama-Decks und vertikalen Schnellaufzügen.</p>
-
-        <h3>5️⃣ Die erste Testfahrt</h3>
-        <p>Im Jahr 2042 wurde der Tridexx auf der Strecke Berlin–Hamburg getestet und als Meisterwerk gefeiert.</p>
-
-        <h3>6️⃣ Heute – Ein Symbol deutscher Ingenieurskunst</h3>
-        <p>Seit 2045 revolutioniert der Tridexx den europäischen Bahnverkehr und setzt neue Maßstäbe für Hochgeschwindigkeitszüge.</p>
-    </section>
-
-    <!-- Kontakt -->
     <section id="kontakt">
-        <h2>📞 Kontakt & Informationen</h2>
-        <p>Haben Sie Fragen oder möchten mehr über den Tridexx erfahren?</p>
-        <p><strong>Email:</strong> tridexx@mobility-de.com</p>
-        <p><strong>Adresse:</strong> Deutsche Bahn Innovationszentrum, Berlin</p>
+      <h2>Kontakt</h2>
+      <p><strong>Telefon:</strong> +91 22 4891 7753</p>
+      <p><strong>Email:</strong> info@tridexx-mobility.com</p>
     </section>
-
-    <footer>
-        <p>&copy; 2045 Tridexx Mobility Deutschland – Alle Rechte vorbehalten.</p>
-    </footer>
-
+  </main>
+  <footer>
+    <p>&copy; 2025 TRIdexx Mobility GmbH – Frankfurt a.M.</p>
+  </footer>
 </body>
 </html>
