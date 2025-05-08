@@ -1,55 +1,105 @@
+# Wir erstellen eine HTML-Datei mit dem vollständigen Projektcode für die TRIdexx-Homepage.
+
+html_code = """
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRIdexx Mobility – Dreifach neue Mobilität</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRIdexx Mobility</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-      color: #222;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
     }
     header {
-      background-color: #c8002c;
+      background-color: #002c5f;
       color: white;
-      padding: 1em;
-      text-align: center;
-    }
-    nav {
-      background-color: #333;
-      color: white;
+      padding: 1rem 2rem;
       display: flex;
-      justify-content: center;
-      gap: 2em;
-      padding: 0.5em;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img {
+      height: 40px;
     }
     nav a {
       color: white;
+      margin-left: 2rem;
       text-decoration: none;
+      font-weight: 500;
     }
-    main {
-      padding: 2em;
-      max-width: 900px;
+    .hero {
+      background-color: #ddd;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url("tridexx_placeholder.png");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .section {
+      padding: 3rem 2rem;
+      max-width: 1200px;
       margin: auto;
-      background-color: white;
+    }
+    .features {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .feature {
+      flex: 1 1 300px;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .tile {
+      background: white;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: #002c5f;
+      font-weight: bold;
+    }
+    .tile:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     footer {
-      background-color: #c8002c;
+      background: #002c5f;
       color: white;
       text-align: center;
-      padding: 1em;
-      margin-top: 2em;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .section h2 {
+      margin-top: 4rem;
+      font-size: 1.8rem;
     }
   </style>
   <script>
-    // Sprachumschaltung basierend auf dem Land
-    fetch("https://ipapi.co/country/")
-      .then(response => response.text())
-      .then(country => {
-        if (country !== "DE") {
+    fetch("https://ipapi.co/json/")
+      .then(response => response.json())
+      .then(data => {
+        if (data.country !== "DE") {
           window.location.href = "en.html";
         }
       });
@@ -57,45 +107,76 @@
 </head>
 <body>
   <header>
-    <h1>TRIdexx Mobility</h1>
-    <p>Eine neue Dimension des Regionalverkehrs</p>
+    <img src="logo_placeholder.png" alt="TRIdexx Logo" />
+    <nav>
+      <a href="#">Produkte</a>
+      <a href="#">Technologie</a>
+      <a href="#">Nachhaltigkeit</a>
+      <a href="#">Kontakt</a>
+    </nav>
   </header>
-  <nav>
-    <a href="#features">Merkmale</a>
-    <a href="#daten">Technische Daten</a>
-    <a href="#kontakt">Kontakt</a>
-  </nav>
-  <main>
-    <section id="features">
-      <h2>Hauptmerkmale</h2>
-      <ul>
-        <li>3 Passagierdecks mit SmartFlow-Steuerung</li>
-        <li>Bis zu 1.220 Sitzplätze pro Zug</li>
-        <li>Max. Geschwindigkeit: 200 km/h</li>
-        <li>Barrierefreier Zugang auf allen Ebenen</li>
-        <li>5G-Rückgrat und Live-Auslastung</li>
-      </ul>
-    </section>
 
-    <section id="daten">
-      <h2>Technische Daten</h2>
-      <table>
-        <tr><td>Länge:</td><td>175,4 m</td></tr>
-        <tr><td>Höhe:</td><td>6,30 m</td></tr>
-        <tr><td>Leistung:</td><td>2.200 kW</td></tr>
-        <tr><td>Etagen:</td><td>3</td></tr>
-        <tr><td>Plätze:</td><td>1.220 Sitzplätze</td></tr>
-      </table>
-    </section>
+  <div class="hero">
+    <div>TRIdexx Vario 3E – Zukunft auf drei Ebenen</div>
+  </div>
 
-    <section id="kontakt">
-      <h2>Kontakt</h2>
-      <p><strong>Telefon:</strong> +91 22 4891 7753</p>
-      <p><strong>Email:</strong> info@tridexx-mobility.com</p>
-    </section>
-  </main>
+  <div class="section">
+    <h2>Willkommen bei TRIdexx Mobility</h2>
+    <p>Der TRIdexx ist der weltweit erste dreistöckige Triebzug für den Hochleistungs-Regionalverkehr. Entwickelt für Kapazität, Komfort und Klimaschutz.</p>
+
+    <div class="features">
+      <div class="feature">
+        <h3>3 Stockwerke</h3>
+        <p>Innovatives Raumkonzept mit über 1.200 Sitzplätzen – ideal für Pendlerachsen mit hohem Fahrgastaufkommen.</p>
+      </div>
+      <div class="feature">
+        <h3>200 km/h Höchstgeschwindigkeit</h3>
+        <p>Schnell, leise, effizient – ideal für schnelle Regionalverbindungen auf Hauptachsen.</p>
+      </div>
+      <div class="feature">
+        <h3>100 % barrierefrei</h3>
+        <p>Aufzüge, Rampen, dynamische Leitsysteme – Mobilität für alle auf allen Ebenen.</p>
+      </div>
+    </div>
+
+    <div class="tiles">
+      <a href="produkt1.html" class="tile">TRIdexx Vario</a>
+      <a href="produkt2.html" class="tile">TRIdexx Hybrid</a>
+      <a href="produkt3.html" class="tile">Intermodale Lösungen</a>
+      <a href="produkt4.html" class="tile">SmartRail AI</a>
+      <a href="produkt5.html" class="tile">GreenTrack Solutions</a>
+      <a href="produkt6.html" class="tile">Fahrzeugwartung 4.0</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Aktuelle Projekte & Dienstleistungen</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>Projekt RheinMetro 2030</h3>
+        <p>TRIdexx liefert 34 dreistöckige Einheiten für das neue Expressnetz RheinMetro. Inbetriebnahme ab 2027. Emissionsfrei, leistungsstark, mit SmartRail AI ausgestattet.</p>
+      </div>
+      <div class="feature">
+        <h3>FleetCare Services</h3>
+        <p>Vollumfängliches Flottenmanagement – von Predictive Maintenance über Ersatzteillogistik bis hin zu 24/7 Betriebsüberwachung. Unsere Züge bleiben 99,7 % verfügbar.</p>
+      </div>
+      <div class="feature">
+        <h3>TRIdexx Digital Control Hub</h3>
+        <p>Intelligente Steuerzentralen für Regionen, die auf moderne Verkehrsnetze umsteigen. Voll integriert mit bestehenden Fahrgastinformationssystemen und EcoGrid-Anbindung.</p>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <p>&copy; 2025 TRIdexx Mobility GmbH – Frankfurt a.M.</p>
+    © 2025 TRIdexx Mobility GmbH – Tel: +91 22 4891 7753 – info@tridexx-mobility.com
   </footer>
 </body>
 </html>
+"""
+
+# Speichern als HTML-Datei
+file_path = "/mnt/data/tridexx_homepage.html"
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(html_code)
+
+file_path
