@@ -25,7 +25,7 @@ function StartPage({ onProceed }) {
         <CardContent className="space-y-4">
           <h1 className="text-3xl font-bold text-center">Minecraft Server – Bewerbung</h1>
           <p className="text-center text-gray-700">
-            Bitte gib deinen <b>Discord-Namen</b> und <b>Minecraft-Namen</b> ein. Mit dem Code <code>60632917</code> gelangst du ins Admin-Panel.
+            Bitte gib deinen <b>Discord-Namen</b> und <b>Minecraft-Namen</b> ein.
           </p>
           <form onSubmit={handleStart} className="space-y-4">
             <div>
