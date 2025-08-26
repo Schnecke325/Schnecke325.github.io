@@ -7,5 +7,5 @@
 |  [Japan](https://schnecke325.github.io/japan.html)  | [Mittelalter Quiz](https://schnecke325.github.io/Quiz_Mittelalter_Reformation.html) |
 | [![](https://schnecke325.github.io/jp.png)](https://schnecke325.github.io/japan.html) | [![](https://schnecke325.github.io/burg.png)](https://schnecke325.github.io/Quiz_Mittelalter_Reformation.html) |
 | ------------- | ------------- |
-| [Tridexx-lore](https://schnecke325.github.io/Tridexxlore.html) | [Builderaplication](https://schnecke325.github.io/builderaplication.js) |
+| [Tridexx-lore](https://schnecke325.github.io/Tridexxlore.html) | [Builderaplication](https://schnecke325.github.io/bewerbung.html) |
 | [![](https://schnecke325.github.io/2025-04-26_23.42.18-removebg-preview.png)](https://schnecke325.github.io/Tridexxlore.html) | ------------- |
