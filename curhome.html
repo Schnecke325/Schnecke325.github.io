@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create: Unlimited Rails</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .collage-img {
+      transition: all 0.8s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-white">
+  <!-- Navigation -->
+  <header class="fixed top-0 w-full bg-gray-900 bg-opacity-80 backdrop-blur z-50">
+    <nav class="max-w-6xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold">Create: Unlimited Rails</h1>
+      <ul class="flex space-x-6">
+        <li><a href="#ueberuns" class="hover:text-yellow-400 transition">Über uns</a></li>
+        <li><a href="#bewerben" class="hover:text-yellow-400 transition">Bewerben</a></li>
+        <li><a href="#karten" class="hover:text-yellow-400 transition">Karten</a></li>
+        <li><a href="#baustandards" class="hover:text-yellow-400 transition">Baustandards</a></li>
+        <li><a href="#discord" class="hover:text-yellow-400 transition">Discord</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('images/banner.jpg');">
+    <div class="bg-black bg-opacity-50 p-8 rounded-2xl shadow-xl">
+      <h2 class="text-4xl md:text-6xl font-bold text-center">Willkommen auf Create: Unlimited Rails</h2>
+      <p class="text-center mt-4 text-lg">Ein Community Server für kreative Schienenwelten in Minecraft.</p>
+    </div>
+  </section>
+
+  <!-- Projektbeschreibung -->
+  <section id="ueberuns" class="max-w-4xl mx-auto px-6 py-16 text-center">
+    <h3 class="text-3xl font-bold mb-6">Unser Projekt</h3>
+    <p class="text-gray-300 text-lg">
+      Wir bauen eine riesige Welt, in der Schienen, Maschinen und Kreativität keine Grenzen haben.
+      Jeder kann mitmachen, solange er unsere Baustandards respektiert. Ob Landschaftsbauer, Ingenieur
+      oder einfach nur Eisenbahn-Fan – hier findest du deinen Platz.
+    </p>
+  </section>
+
+  <!-- Bilder Collage -->
+  <section class="py-16 bg-gray-900">
+    <div class="flex justify-center items-center space-x-4">
+      <img id="leftImg" src="images/rail1.jpg" class="w-48 h-32 object-cover rounded-xl filter blur-sm opacity-50 collage-img" />
+      <img id="centerImg" src="images/rail2.jpg" class="w-96 h-64 object-cover rounded-2xl shadow-xl collage-img" />
+      <img id="rightImg" src="images/rail3.jpg" class="w-48 h-32 object-cover rounded-xl filter blur-sm opacity-50 collage-img" />
+    </div>
+  </section>
+
+  <script>
+    const images = [
+      "images/rail1.jpg",
+      "images/rail2.jpg",
+      "images/rail3.jpg",
+      "images/rail4.jpg"
+    ];
+
+    let centerIndex = 1;
+    function updateImages() {
+      document.getElementById("centerImg").src = images[centerIndex % images.length];
+      document.getElementById("leftImg").src = images[(centerIndex - 1 + images.length) % images.length];
+      document.getElementById("rightImg").src = images[(centerIndex + 1) % images.length];
+    }
+
+    setInterval(() => {
+      centerIndex = (centerIndex + 1) % images.length;
+      updateImages();
+    }, 4000);
+  </script>
+</body>
+</html>
