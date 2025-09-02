@@ -16,12 +16,19 @@
   <header class="fixed top-0 w-full bg-gray-900 bg-opacity-80 backdrop-blur z-50">
     <nav class="max-w-6xl mx-auto flex justify-between items-center p-4">
       <h1 class="text-xl font-bold">Create: Unlimited Rails</h1>
-      <ul class="flex space-x-6">
-        <li><a href="ueberuns.html" class="hover:text-yellow-400 transition">Über uns</a></li>
-        <li><a href="https://schnecke325.github.io/bewerbung.html" class="hover:text-yellow-400 transition">Bewerben</a></li>
-        <li><a href="karten.html" class="hover:text-yellow-400 transition">Karten</a></li>
-        <li><a href="baustandards.html" class="hover:text-yellow-400 transition">Baustandards</a></li>
-        <li><a href="https://discord.gg/HPUQEUDn6g" target="_blank" class="hover:text-yellow-400 transition">Discord</a></li>
+      <ul class="flex space-x-6 items-center">
+        <li><a href="ueberuns.html" class="hover:text-yellow-400 transition" data-de="Über uns" data-en="About Us">Über uns</a></li>
+        <li><a href="https://schnecke325.github.io/bewerbung.html" class="hover:text-yellow-400 transition" data-de="Bewerben" data-en="Apply">Bewerben</a></li>
+        <li><a href="karten.html" class="hover:text-yellow-400 transition" data-de="Karten" data-en="Maps">Karten</a></li>
+        <li><a href="" class="hover:text-yellow-400 transition" data-de="Baustandards" data-en="Build Standards">Baustandards</a></li>
+        <li><a href="#modpack" class="hover:text-yellow-400 transition" data-de="Modpack" data-en="Modpack">Modpack</a></li>
+        <li><a href="https://discord.gg/deinserverlink" target="_blank" class="hover:text-yellow-400 transition" data-de="Discord" data-en="Discord">Discord</a></li>
+        <!-- Language Toggle -->
+        <li>
+          <button id="langToggle" class="ml-4 px-3 py-1 border border-yellow-400 rounded-xl text-yellow-400 hover:bg-yellow-400 hover:text-black transition">
+            DE
+          </button>
+        </li>
       </ul>
     </nav>
   </header>
@@ -29,15 +36,15 @@
   <!-- Hero Banner -->
   <section class="h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url(https://schnecke325.github.io/2025-08-04_21.08.57_edited.png);">
     <div class="bg-black bg-opacity-50 p-8 rounded-2xl shadow-xl">
-      <h2 class="text-4xl md:text-6xl font-bold text-center">Willkommen auf Create: Unlimited Rails</h2>
-      <p class="text-center mt-4 text-lg">...</p>
+      <h2 id="heroTitle" class="text-4xl md:text-6xl font-bold text-center" data-de="Willkommen auf Create: Unlimited Rails" data-en="Welcome to Create: Unlimited Rails">Willkommen auf Create: Unlimited Rails</h2>
+      <p id="heroSubtitle" class="text-center mt-4 text-lg" data-de="Ein Community Server für kreative Schienenwelten in Minecraft." data-en="A community server for creative railway worlds in Minecraft.">Ein Minecraft Server</p>
     </div>
   </section>
 
   <!-- Projektbeschreibung -->
   <section class="max-w-4xl mx-auto px-6 py-16 text-center">
-    <h3 class="text-3xl font-bold mb-6">Unser Projekt</h3>
-    <p class="text-gray-300 text-lg">
+    <h3 id="projectTitle" class="text-3xl font-bold mb-6" data-de="Unser Projekt" data-en="Our Project">Unser Projekt</h3>
+    <p id="projectText" class="text-gray-300 text-lg" data-de="bla bla bla" data-en="bla bla bla auf englisch">
       bla bla bla
     </p>
   </section>
@@ -49,6 +56,15 @@
       <img id="centerImg" src="images/rail2.jpg" class="w-96 h-64 object-cover rounded-2xl shadow-xl collage-img" />
       <img id="rightImg" src="images/rail3.jpg" class="w-48 h-32 object-cover rounded-xl filter blur-sm opacity-50 collage-img" />
     </div>
+  </section>
+
+  <!-- Modpack Download -->
+  <section id="modpack" class="py-20 bg-gray-800 text-center">
+    <h3 id="modpackTitle" class="text-3xl font-bold mb-6" data-de="Modpack Download" data-en="Download Modpack">Modpack Download</h3>
+    <p id="modpackText" class="text-gray-300 mb-6" data-de="Lade hier unser offizielles Modpack herunter, um direkt mitspielen zu können." data-en="Download our official modpack here to join the server right away.">Lade hier unser offizielles Modpack herunter um direkt mitspielen zu können.</p>
+    <a href="https://www.curseforge.com/minecraft/modpacks/create-rails-unlimited" target="_blank" id="modpackButton" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-6 py-3 rounded-xl shadow-lg transition" data-de="📦 Modpack herunterladen" data-en="📦 Download Modpack">
+      📦 Modpack herunterladen
+    </a>
   </section>
 
   <script>
@@ -70,6 +86,19 @@
       centerIndex = (centerIndex + 1) % images.length;
       updateImages();
     }, 4000);
+
+    // Language Toggle
+    const langToggle = document.getElementById("langToggle");
+    let currentLang = "de";
+
+    langToggle.addEventListener("click", () => {
+      currentLang = currentLang === "de" ? "en" : "de";
+      langToggle.textContent = currentLang.toUpperCase();
+
+      document.querySelectorAll("[data-de]").forEach(el => {
+        el.textContent = el.getAttribute(`data-${currentLang}`);
+      });
+    });
   </script>
 </body>
 </html>
