@@ -12,39 +12,19 @@
     }
     *{box-sizing:border-box}
     body{margin:0;background:linear-gradient(135deg,var(--bg1),var(--bg2));min-height:100vh;color:#111}
-    header{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:18px 24px;position:sticky;top:0;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);
-      border-bottom:1px solid #e6e6e6;z-index:10;
-    }
-    .brand{font-weight:700;font-size:1.2rem;color:#0f172a}
-    .top-controls{display:flex;gap:10px;align-items:center}
-    .lang-toggle{
-      border-radius:999px;border:1px solid #e6e6e6;padding:6px 12px;cursor:pointer;
-      background:white;font-weight:600;transition:all .2s;
-    }
-    .lang-toggle:hover{background:var(--accent);color:white;border-color:var(--accent)}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px}
+    .brand{font-weight:700;font-size:1.15rem}
+    .top-controls{display:flex;gap:8px;align-items:center}
     .container{max-width:1100px;margin:20px auto;padding:18px}
-    .card{
-      background:var(--card);border-radius:16px;padding:22px;
-      box-shadow:0 8px 24px rgba(10,10,10,0.08);
-      transition:transform .2s;
-    }
-    .card:hover{transform:translateY(-2px)}
-    form .row{margin-bottom:14px}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 6px 20px rgba(10,10,10,0.06)}
+    form .row{margin-bottom:12px}
     label{display:block;margin-bottom:6px;font-weight:600}
-    input[type="text"],textarea,input[type="file"]{
-      width:100%;padding:11px 12px;border:1px solid #e6e6e6;border-radius:10px;font-size:0.95rem
-    }
+    input[type="text"],textarea,input[type="file"]{width:100%;padding:10px;border:1px solid #e6e6e6;border-radius:8px;font-size:0.95rem}
     textarea{resize:vertical}
-    .btn{
-      background:var(--accent);color:white;padding:10px 16px;border-radius:12px;
-      border:none;cursor:pointer;font-weight:600;transition:all .2s;
-    }
-    .btn:hover{opacity:0.9;transform:translateY(-1px)}
+    .btn{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
     .btn.secondary{background:#374151}
     .btn.destructive{background:var(--danger)}
-    .grid{display:grid;gap:16px}
+    .grid{display:grid;gap:14px}
     .grid.cols-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
     .images-row{display:flex;gap:8px;overflow-x:auto;padding-top:8px}
     .images-row img{height:84px;width:120px;object-fit:cover;border-radius:8px}
@@ -53,10 +33,10 @@
     .status.offen{background:#fffbeb;color:#92400e}
     .status.angenommen{background:#ecfdf5;color:#065f46}
     .status.abgelehnt{background:#fff1f2;color:#991b1b}
+    .lang-toggle{border-radius:999px;border:1px solid #e6e6e6;padding:6px 8px;cursor:pointer}
     footer{padding:18px;text-align:center;color:var(--muted);font-size:0.9rem}
-    @media (max-width:600px){
-      header{padding:12px} .container{padding:12px} .brand{font-size:1rem}
-    }
+    /* responsive */
+    @media (max-width:600px){header{padding:12px} .container{padding:12px} .brand{font-size:1rem}}
   </style>
 </head>
 <body>
@@ -67,107 +47,303 @@
     </div>
   </header>
 
-  <main class="container" id="app"></main>
+  <main class="container" id="app">
+    <!-- content injected by JS -->
+  </main>
 
   <footer>© Create: Unlimited Rails</footer>
 
 <script>
+/*
+  Single-file app (no build). Saves applications in localStorage under key 'cur_apps'.
+  Images are stored as data URLs (base64) – beware large files.
+  Language toggle affects non-admin pages; admin remains German.
+*/
+
 const LS_KEY = 'cur_apps_v1';
 const SECRET = '60632917';
 const communityName = 'Create: Unlimited Rails';
 
+// translations for DE and EN (user-facing)
 const T = {
-  de: { start_title:'Minecraft Server – Bewerbung',start_info:'Bitte gib deinen Discord- und Minecraft-Namen ein.',
-    discord_label:'Discord-Name',discord_ph:'z.B. MeinDiscordName',
-    mc_label:'Minecraft-Name',mc_ph:'Dein In-Game-Name',
-    start_btn:'Weiter',form_title:'Bewerbungsformular',logged_in:'Angemeldet als',
-    reason_label:'Warum möchtest du Builder werden?',reason_ph:'Kurz deine Motivation beschreiben...',
-    builds_label:'Bilder von Bauwerken hochladen',vehicles_label:'Bilder von Fahrzeugen hochladen',
-    submit_btn:'Bewerbung absenden',thanks_title:'Vielen Dank für deine Bewerbung! 🎉',
-    thanks_text:'Wir werden deine Bewerbung prüfen und uns bald bei dir melden.',
-    back_btn:'Zurück zur Startseite',
-    admin_title:'Admin: Bewerbungen',admin_noapps:'Noch keine Bewerbungen vorhanden.',admin_back:'Zur Startseite',
-    accept:'Annehmen',reject:'Ablehnen',
-    status_offen:'offen',status_accepted:'angenommen',status_rejected:'abgelehnt'
+  de: {
+    start_title: 'Minecraft Server – Bewerbung',
+    start_info: 'Bitte gib deinen Discord- und Minecraft-Namen ein.',
+    discord_label: 'Discord-Name',
+    discord_ph: 'z.B. MeinDiscordName',
+    mc_label: 'Minecraft-Name',
+    mc_ph: 'Dein In-Game-Name',
+    start_btn: 'Weiter',
+    form_title: 'Bewerbungsformular',
+    logged_in: 'Angemeldet als',
+    reason_label: 'Warum möchtest du Builder werden?',
+    reason_ph: 'Kurz deine Motivation beschreiben...',
+    builds_label: 'Bilder von Bauwerken hochladen',
+    vehicles_label: 'Bilder von Fahrzeugen hochladen',
+    submit_btn: 'Bewerbung absenden',
+    thanks_title: 'Vielen Dank für deine Bewerbung! 🎉',
+    thanks_text: 'Wir werden deine Bewerbung prüfen und uns bald bei dir melden.',
+    back_btn: 'Zurück zur Startseite',
+    admin_title: 'Admin: Bewerbungen',
+    admin_noapps: 'Noch keine Bewerbungen vorhanden.',
+    admin_back: 'Zur Startseite',
+    accept: 'Annehmen',
+    reject: 'Ablehnen',
+    status_offen: 'offen',
+    status_accepted: 'angenommen',
+    status_rejected: 'abgelehnt'
   },
-  en: { start_title:'Minecraft Server – Application',start_info:'Please enter your Discord and Minecraft name.',
-    discord_label:'Discord name',discord_ph:'e.g. MyDiscordName',
-    mc_label:'Minecraft name',mc_ph:'Your in-game name',
-    start_btn:'Continue',form_title:'Application Form',logged_in:'Logged in as',
-    reason_label:'Why do you want to be a builder?',reason_ph:'Briefly describe your motivation...',
-    builds_label:'Upload images of builds',vehicles_label:'Upload images of vehicles',
-    submit_btn:'Submit application',thanks_title:'Thank you for applying! 🎉',
-    thanks_text:'We will review your application and contact you soon.',
-    back_btn:'Back to start',
-    admin_title:'Admin: Bewerbungen',admin_noapps:'No applications yet.',admin_back:'Back to start',
-    accept:'Accept',reject:'Reject',
-    status_offen:'open',status_accepted:'accepted',status_rejected:'rejected'
+  en: {
+    start_title: 'Minecraft Server – Application',
+    start_info: 'Please enter your Discord and Minecraft name.',
+    discord_label: 'Discord name',
+    discord_ph: 'e.g. MyDiscordName',
+    mc_label: 'Minecraft name',
+    mc_ph: 'Your in-game name',
+    start_btn: 'Continue',
+    form_title: 'Application Form',
+    logged_in: 'Logged in as',
+    reason_label: 'Why do you want to be a builder?',
+    reason_ph: "Briefly describe your motivation...",
+    builds_label: 'Upload images of builds',
+    vehicles_label: 'Upload images of vehicles',
+    submit_btn: 'Submit application',
+    thanks_title: 'Thank you for applying! 🎉',
+    thanks_text: 'We will review your application and contact you soon.',
+    back_btn: 'Back to start',
+    // admin remains German but we keep placeholders
+    admin_title: 'Admin: Bewerbungen',
+    admin_noapps: 'No applications yet.',
+    admin_back: 'Back to start',
+    accept: 'Accept',
+    reject: 'Reject',
+    status_offen: 'open',
+    status_accepted: 'accepted',
+    status_rejected: 'rejected'
   }
 };
 
-let lang='de';
-const app=document.getElementById('app');
-function loadApps(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'[]');}catch(e){return[]}}
-function saveApps(arr){localStorage.setItem(LS_KEY,JSON.stringify(arr));}
-function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+let lang = 'de'; // default
+const app = document.getElementById('app');
 
-/* Render Start */
-function renderStart(){
-  const tt=T[lang];
-  app.innerHTML=`
-    <div class="card">
-      <h2>${communityName} — ${tt.start_title}</h2>
-      <p class="small">${tt.start_info}</p>
-      <form id="startForm" style="margin-top:14px">
-        <div class="row"><label>${tt.discord_label}</label><input id="discord" type="text" placeholder="${tt.discord_ph}"></div>
-        <div class="row"><label>${tt.mc_label}</label><input id="minecraft" type="text" placeholder="${tt.mc_ph}"></div>
-        <button class="btn" type="submit">${tt.start_btn}</button>
-      </form>
-    </div>`;
-  document.getElementById('startForm').addEventListener('submit',e=>{
-    e.preventDefault();
-    const d=document.getElementById('discord').value.trim();
-    const m=document.getElementById('minecraft').value.trim();
-    if(d===SECRET||m===SECRET){renderAdmin();return;}
-    if(!d||!m){alert(lang==='de'?'Bitte Discord- und Minecraft-Namen eingeben.':'Please enter Discord and Minecraft name.');return;}
-    renderForm({discord:d,minecraft:m});
+// storage helpers
+function loadApps(){
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } 
+  catch(e){ return []; }
+}
+function saveApps(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+
+// small util: read files to dataURLs
+function filesToDataURLs(files, cb){
+  const readers = [];
+  const results = [];
+  const farr = Array.from(files || []);
+  if(!farr.length) return cb([]);
+  let done = 0;
+  farr.forEach((f, i) => {
+    const r = new FileReader();
+    r.onload = () => {
+      results[i] = r.result;
+      done++;
+      if(done === farr.length) cb(results);
+    };
+    r.onerror = () => { results[i] = null; done++; if(done === farr.length) cb(results); };
+    r.readAsDataURL(f);
   });
 }
 
-/* Render Form */
-function renderForm(user){
-  const tt=T[lang];
-  app.innerHTML=`
+/* ---------- render functions ---------- */
+
+function renderStart(){
+  const tt = T[lang];
+  app.innerHTML = `
     <div class="card">
-      <h2>${communityName} — ${tt.form_title}</h2>
+      <h2 style="margin:0 0 8px">${communityName} — ${tt.start_title}</h2>
+      <p class="small">${tt.start_info}</p>
+      <div style="margin-top:12px">
+        <form id="startForm">
+          <div class="row"><label>${tt.discord_label}</label><input id="discord" type="text" placeholder="${tt.discord_ph}" autocomplete="off" /></div>
+          <div class="row"><label>${tt.mc_label}</label><input id="minecraft" type="text" placeholder="${tt.mc_ph}" autocomplete="off" /></div>
+          <div style="display:flex;gap:10px;margin-top:10px"><button class="btn" type="submit">${tt.start_btn}</button></div>
+        </form>
+      </div>
+    </div>
+  `;
+  document.getElementById('startForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const discord = document.getElementById('discord').value.trim();
+    const mc = document.getElementById('minecraft').value.trim();
+    if(discord === SECRET || mc === SECRET){
+      renderAdmin();
+      return;
+    }
+    if(!discord || !mc){ alert(lang==='de' ? 'Bitte Discord- und Minecraft-Namen eingeben.' : 'Please enter Discord and Minecraft name.'); return; }
+    renderForm({ discord, minecraft: mc });
+  });
+}
+
+function renderForm(user){
+  const tt = T[lang];
+  app.innerHTML = `
+    <div class="card">
+      <h2 style="margin:0 0 8px">${communityName} — ${tt.form_title}</h2>
       <p class="small">${tt.logged_in} <strong>${escapeHtml(user.minecraft)}</strong> (Discord: ${escapeHtml(user.discord)})</p>
       <form id="appForm">
-        <div class="row"><label>${tt.reason_label}</label><textarea id="reason" placeholder="${tt.reason_ph}" rows="4" required></textarea></div>
-        <div class="row"><label>${tt.builds_label}</label><input id="builds" type="file" accept="image/*" multiple></div>
+        <div class="row"><label>${tt.reason_label}</label><textarea id="reason" required placeholder="${tt.reason_ph}" rows="4"></textarea></div>
+        <div class="row"><label>${tt.builds_label}</label><input id="builds" type="file" accept="image/*" multiple /></div>
         <div class="images-row" id="buildPreviews"></div>
-        <div class="row"><label>${tt.vehicles_label}</label><input id="vehicles" type="file" accept="image/*" multiple></div>
+        <div class="row"><label>${tt.vehicles_label}</label><input id="vehicles" type="file" accept="image/*" multiple /></div>
         <div class="images-row" id="vehiclePreviews"></div>
-        <button class="btn" type="submit" style="margin-top:12px">${tt.submit_btn}</button>
+        <div style="margin-top:12px"><button class="btn" type="submit">${tt.submit_btn}</button></div>
       </form>
-    </div>`;
-  const b=document.getElementById('builds'),v=document.getElementById('vehicles');
-  const bp=document.getElementById('buildPreviews'),vp=document.getElementById('vehiclePreviews');
-  function preview(input,cont){cont.innerHTML='';Array.from(input.files||[]).forEach(f=>{const r=new FileReader();r.onload=()=>{const img=new Image();img.src=r.result;cont.appendChild(img)};r.readAsDataURL(f)})}
-  b.onchange=()=>preview(b,bp);v.onchange=()=>preview(v,vp);
-  document.getElementById('appForm').onsubmit=e=>{
-    e.preventDefault();
-    const reason=document.getElementById('reason').value.trim();
-    const newApp={id:Date.now(),name:user.minecraft,discord:user.discord,reason,status:'offen',createdAt:new Date().toISOString()};
-    loadFiles(b.files,d1=>loadFiles(v.files,d2=>{
-      newApp.builds=d1;newApp.vehicles=d2;
-      const apps=loadApps();apps.unshift(newApp);saveApps(apps);renderThankYou();
-    }));
+    </div>
+  `;
+  const buildsInput = document.getElementById('builds');
+  const vehiclesInput = document.getElementById('vehicles');
+  const buildPreviews = document.getElementById('buildPreviews');
+  const vehiclePreviews = document.getElementById('vehiclePreviews');
+
+  function previewFiles(input, container){
+    container.innerHTML = '';
+    const f = input.files ? Array.from(input.files) : [];
+    f.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = document.createElement('img');
+        img.src = reader.result;
+        container.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
   }
+  buildsInput.addEventListener('change', ()=> previewFiles(buildsInput, buildPreviews));
+  vehiclesInput.addEventListener('change', ()=> previewFiles(vehiclesInput, vehiclePreviews));
+
+  document.getElementById('appForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const reason = document.getElementById('reason').value.trim();
+    // convert files to data URLs then save
+    filesToDataURLs(buildsInput.files, (buildsData)=>{
+      filesToDataURLs(vehiclesInput.files, (vehiclesData)=>{
+        const apps = loadApps();
+        const newApp = {
+          id: Date.now(),
+          name: user.minecraft,
+          discord: user.discord,
+          reason,
+          builds: buildsData.filter(Boolean),
+          vehicles: vehiclesData.filter(Boolean),
+          status: 'offen',
+          createdAt: new Date().toISOString()
+        };
+        apps.unshift(newApp);
+        saveApps(apps);
+        renderThankYou();
+      });
+    });
+  });
 }
-function loadFiles(files,cb){if(!files.length)return cb([]);let out=[],done=0;Array.from(files).forEach((f,i)=>{const r=new FileReader();r.onload=()=>{out[i]=r.result;done++;if(done===files.length)cb(out)};r.readAsDataURL(f)})}
 
-/* Thank you */
-function renderThankYou(){const tt=T[lang];app.innerHTML=`<div class="card" style="text-align:center"><h2>${tt.thanks_title}</h2><p>${tt.thanks_text}</p><button class="btn" id="backBtn">${tt.back_btn}</button></div>`;document.getElementById('backBtn').onclick=()=>renderStart();}
+function renderThankYou(){
+  const tt = T[lang];
+  app.innerHTML = `
+    <div class="card" style="text-align:center">
+      <h2 style="margin:0 0 8px">${tt.thanks_title}</h2>
+      <p class="small">${tt.thanks_text}</p>
+      <div style="margin-top:14px"><button id="backBtn" class="btn">${tt.back_btn}</button></div>
+    </div>
+  `;
+  document.getElementById('backBtn').addEventListener('click', ()=> renderStart());
+}
 
-/* Admin (immer DE) */
-function renderAdmin(){const tt=T.de,apps=loadApps();app.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2>${communityName} — ${tt.admin_title}</h2><button class="btn secondary" id="backHome">${tt.admin_back}</button></div><div class="grid cols-2" id="adminList"></div>`;document.getElementById('backHome').onclick=()=>renderStart();const list=document.getElementById('adminList');if(!apps.length){list.innerHTML=`<div class="card">${tt.admin_noapps}</div>`;return;}apps.forEach(a=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<div style="display:flex;justify-content:space-between"><div><strong>${escapeHtml(a.name)}</strong><div class="small">Discord: ${escapeHtml(a.discord)}</div></div><div><span class="status ${a.status}">${a.status}</span></div></div><p>${escapeHtml(a.reason)}</p><div class="small">Bauwerke:</div><div class="images-row" id="b${a.id}"></div><div class="small" style="margin-top:6px">Fahrzeuge:</div><div class="images-row" id="v${a.id}"></div><div style="margin-top:10px;text-align:right"><button class="btn destructive" data-action="reject" data-id="${a.id}">${tt.reject}</button><button class="btn" data-action="accept" data-id="${a.id}">${tt.accept}</button></div>`;list.appendChild(c);a.builds?.forEach(s=>{const i=new Image();i.src=s;c.querySelector('#b'+a.id).appendChild(i)});a.vehicles?.forEach(s=>{const i=new Image();i.src=s;c.querySelector('#v'+a.id).appendChild(i)})});lis_
+/* Admin (always German) */
+function renderAdmin(){
+  const tt = T.de;
+  const apps = loadApps();
+  app.innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px">
+      <h2 style="margin:0">${communityName} — ${tt.admin_title}</h2>
+      <div><button id="backHome" class="btn secondary">${tt.admin_back}</button></div>
+    </div>
+    <div class="grid cols-2" id="adminList"></div>
+  `;
+  document.getElementById('backHome').addEventListener('click', ()=> renderStart());
+  const list = document.getElementById('adminList');
+  if(!apps.length){ list.innerHTML = `<div class="card">${tt.admin_noapps}</div>`; return; }
+  list.innerHTML = '';
+  apps.forEach(appItem => {
+    const card = document.createElement('div'); card.className='card';
+    const statusClass = appItem.status === 'offen' ? 'offen' : (appItem.status === 'angenommen' ? 'angenommen' : 'abgelehnt');
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between">
+        <div><strong style="font-size:1.02rem">${escapeHtml(appItem.name)}</strong><div class="small">Discord: ${escapeHtml(appItem.discord)}</div></div>
+        <div><span class="status ${statusClass}">${appItem.status}</span></div>
+      </div>
+      <p style="margin:10px 0;font-style:italic">${escapeHtml(appItem.reason)}</p>
+      <div class="small" style="margin-bottom:6px"><strong>Bauwerke:</strong></div>
+      <div class="images-row" id="b${appItem.id}"></div>
+      <div style="margin-top:8px" class="small"><strong>Fahrzeuge:</strong></div>
+      <div class="images-row" id="v${appItem.id}"></div>
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn destructive" data-action="reject" data-id="${appItem.id}">${tt.reject}</button>
+        <button class="btn" data-action="accept" data-id="${appItem.id}">${tt.accept}</button>
+      </div>
+    `;
+    list.appendChild(card);
+    // fill images
+    const bcont = card.querySelector('#b'+appItem.id);
+    const vcont = card.querySelector('#v'+appItem.id);
+    (appItem.builds||[]).forEach(src => {
+      const img = document.createElement('img'); img.src = src; bcont.appendChild(img);
+    });
+    (appItem.vehicles||[]).forEach(src => {
+      const img = document.createElement('img'); img.src = src; vcont.appendChild(img);
+    });
+  });
+
+  list.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-action]');
+    if(!btn) return;
+    const action = btn.getAttribute('data-action');
+    const id = Number(btn.getAttribute('data-id'));
+    const apps = loadApps();
+    const idx = apps.findIndex(a=>a.id===id);
+    if(idx===-1) return;
+    if(action === 'accept') apps[idx].status = 'angenommen';
+    if(action === 'reject') apps[idx].status = 'abgelehnt';
+    saveApps(apps);
+    renderAdmin();
+  });
+}
+
+/* helpers */
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]); }
+
+/* language toggle */
+const langToggle = document.getElementById('langToggle');
+function updateLangToggle(){
+  langToggle.textContent = (lang==='de') ? 'DE | EN' : 'DE | EN';
+  // Show current language subtly (left side)
+  langToggle.style.fontWeight = '700';
+}
+langToggle.addEventListener('click', ()=>{
+  // toggle languages DE <-> EN for user-facing pages; admin stays German
+  lang = (lang==='de') ? 'en' : 'de';
+  updateLangToggle();
+  // rerender current page (best-effort): simple approach: if admin currently visible, do nothing
+  const adminTitle = document.querySelector('h2') && document.querySelector('h2').textContent;
+  if(adminTitle && adminTitle.includes('Admin')) {
+    // keep admin (German)
+    renderAdmin();
+  } else {
+    renderStart();
+  }
+});
+updateLangToggle();
+
+/* initial render */
+renderStart();
+
+</script>
+</body>
+</html>
