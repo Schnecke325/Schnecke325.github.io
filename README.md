@@ -1,4 +1,4 @@
-| [Ukraine Russland Konflikt](https://schnecke325.github.io/) | [China Indien Grenzkonflikt (von Arman)](https://schnecke325.github.io/) |
+| [Ukraine Russland Konflikt](https://schnecke325.github.io/) | [China Indien Grenzkonflikt l](https://schnecke325.github.io/) |
 | ------------- | ------------- |
 | [![](https://schnecke325.github.io/URU.jpg)](https://schnecke325.github.io/)  | [![](https://schnecke325.github.io/CIN.jpg)](https://schnecke325.github.io/) |
 | ------------- | ------------- |
