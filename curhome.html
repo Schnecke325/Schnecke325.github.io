@@ -76,16 +76,17 @@
     ];
 
     let centerIndex = 1;
-    function updateImages() {
-      document.getElementById("centerImg").src = images[centerIndex % images.length];
-      document.getElementById("rightImg").src = images[(centerIndex + 1) % images.length];
-      document.getElementById("leftImg").src = images[(centerIndex - 1 + images.length) % images.length];
-    }
 
-    setInterval(() => {
-      centerIndex = (centerIndex + 1) % images.length;
-      updateImages();
-    }, 4000);
+function updateImages() {
+  document.getElementById("centerImg").src = images[centerIndex % images.length];
+  document.getElementById("leftImg").src = images[(centerIndex + 1) % images.length];  
+  document.getElementById("rightImg").src = images[(centerIndex - 1 + images.length) % images.length];
+}
+
+setInterval(() => {
+  centerIndex = (centerIndex - 1 + images.length) % images.length; // rückwärts statt vorwärts
+  updateImages();
+}, 4000);
 
     // Language Toggle
     const langToggle = document.getElementById("langToggle");
