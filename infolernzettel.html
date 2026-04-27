@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOP in Python – Lernzettel</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2435;
+    --border: #2a3047;
+    --accent: #4f9eff;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --code-bg: #111827;
+    --keyword: #c084fc;
+    --string: #86efac;
+    --comment: #6b7280;
+    --func: #67e8f9;
+    --num: #fb923c;
+    --cls: #fde68a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1f35 50%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(79,158,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(167,139,250,0.08) 0%, transparent 60%);
+  }
+  header .tag {
+    display: inline-block;
+    background: rgba(79,158,255,0.12);
+    border: 1px solid rgba(79,158,255,0.3);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3em 1em;
+    border-radius: 2em;
+    margin-bottom: 1.2rem;
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e2e8f0 0%, #4f9eff 50%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--muted);
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    position: sticky; top: 0; z-index: 100;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.3em 0.8em;
+    border-radius: 1em;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  nav a:hover { color: var(--accent); border-color: rgba(79,158,255,0.3); background: rgba(79,158,255,0.06); }
+
+  /* LAYOUT */
+  main { max-width: 940px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* SECTIONS */
+  section {
+    margin-bottom: 3.5rem;
+    animation: fadeIn 0.4s ease;
+  }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    width: 2.2rem; height: 2.2rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 1.6rem 0 0.7rem;
+  }
+  h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 1.2rem 0 0.5rem;
+  }
+  p { margin-bottom: 0.8rem; color: var(--text); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  @media(max-width:600px){ .card-row { grid-template-columns:1fr; } }
+  .card.accent-blue { border-left: 3px solid var(--accent); }
+  .card.accent-purple { border-left: 3px solid var(--accent2); }
+  .card.accent-green { border-left: 3px solid var(--accent3); }
+  .card.accent-orange { border-left: 3px solid var(--accent4); }
+  .card.accent-pink { border-left: 3px solid var(--accent5); }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    background: rgba(79,158,255,0.07);
+    border: 1px solid rgba(79,158,255,0.2);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  .highlight.green { background: rgba(52,211,153,0.07); border-color: rgba(52,211,153,0.2); }
+  .highlight.purple { background: rgba(167,139,250,0.07); border-color: rgba(167,139,250,0.2); }
+  .highlight.orange { background: rgba(251,146,60,0.07); border-color: rgba(251,146,60,0.2); }
+  .highlight strong { color: var(--accent3); }
+  .highlight.purple strong { color: var(--accent2); }
+  .highlight.orange strong { color: var(--accent4); }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  td { padding: 0.55rem 0.9rem; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .tbl-wrap { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+
+  /* CODE */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  .code-label {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 0.4rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .code-label::before { content:''; width:8px;height:8px;border-radius:50%;background:var(--accent3); }
+  pre {
+    padding: 1.2rem 1.2rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    tab-size: 4;
+    color: var(--text);
+    margin: 0;
+  }
+  /* syntax colors via spans */
+  .kw { color: var(--keyword); font-weight: 600; }
+  .st { color: var(--string); }
+  .cm { color: var(--comment); font-style: italic; }
+  .fn { color: var(--func); }
+  .nm { color: var(--num); }
+  .cl { color: var(--cls); }
+  .op { color: #94a3b8; }
+
+  /* UML Diagrams */
+  .uml-container { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1.2rem 0; align-items: flex-start; }
+  .uml-class {
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    min-width: 180px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .uml-class-name {
+    background: rgba(79,158,255,0.15);
+    border-bottom: 2px solid var(--accent);
+    padding: 0.5rem 0.8rem;
+    text-align: center;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .uml-section {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid rgba(79,158,255,0.2);
+  }
+  .uml-section:last-child { border-bottom: none; }
+  .uml-item { padding: 0.15rem 0; color: var(--text); }
+  .uml-item .vis-pub { color: var(--accent3); }
+  .uml-item .vis-priv { color: var(--accent5); }
+  .uml-item .vis-prot { color: var(--accent4); }
+  .uml-arrow {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    color: var(--muted);
+    padding-top: 1.5rem;
+  }
+
+  /* Object diagram */
+  .uml-object {
+    border: 2px solid var(--accent3);
+    border-radius: 4px;
+    min-width: 180px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .uml-object-name {
+    background: rgba(52,211,153,0.12);
+    border-bottom: 2px solid var(--accent3);
+    padding: 0.5rem 0.8rem;
+    text-align: center;
+    font-weight: 700;
+    color: var(--accent3);
+    text-decoration: underline;
+  }
+
+  /* Relationship diagram */
+  .rel-diagram {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 1rem 0; flex-wrap: wrap;
+  }
+  .rel-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 0.3rem;
+  }
+  .rel-line {
+    display: flex; align-items: center; gap: 0; flex: 1; min-width: 120px;
+    flex-direction: column; gap: 2px;
+  }
+  .rel-line-inner {
+    width: 100%;
+    height: 2px;
+    background: var(--muted);
+    position: relative;
+  }
+  .rel-line-inner.diamond::before {
+    content: '◆';
+    position: absolute; left: -1px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: var(--accent4);
+    line-height: 1;
+  }
+  .rel-line-inner.arrow::after {
+    content: '▶';
+    position: absolute; right: -1px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1;
+  }
+
+  /* Visibility badges */
+  .badge {
+    display: inline-block;
+    padding: 0.1em 0.5em;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .badge-pub { background: rgba(52,211,153,0.15); color: var(--accent3); }
+  .badge-priv { background: rgba(244,114,182,0.15); color: var(--accent5); }
+  .badge-prot { background: rgba(251,146,60,0.15); color: var(--accent4); }
+
+  /* Lists */
+  ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+  li { margin-bottom: 0.3rem; }
+  li::marker { color: var(--accent); }
+
+  /* Naming convention table colors */
+  .conv-class { color: var(--cls); font-family: 'JetBrains Mono', monospace; }
+  .conv-func { color: var(--func); font-family: 'JetBrains Mono', monospace; }
+  .conv-var { color: var(--accent3); font-family: 'JetBrains Mono', monospace; }
+  .conv-const { color: var(--accent4); font-family: 'JetBrains Mono', monospace; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Tip box */
+  .tip {
+    background: rgba(167,139,250,0.08);
+    border-left: 3px solid var(--accent2);
+    padding: 0.7rem 1rem;
+    margin: 0.8rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.88rem;
+  }
+  .tip::before { content: '💡 '; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">Lernzettel · Klasse 10–12</div>
+  <h1>Objektorientierte Programmierung<br>in Python</h1>
+  <p>Alles was du für die Klassenarbeit brauchst · verständlich erklärt · mit Codebeispielen</p>
+</header>
+
+<nav>
+  <a href="#grundlagen">① Grundlagen</a>
+  <a href="#uml">② UML & Diagramme</a>
+  <a href="#beziehungen">③ Beziehungen</a>
+  <a href="#sichtbarkeit">④ Sichtbarkeit</a>
+  <a href="#python">⑤ Python-Code</a>
+  <a href="#namen">⑥ Namenskonventionen</a>
+</nav>
+
+<main>
+
+<!-- ==================== 1. GRUNDLAGEN ==================== -->
+<section id="grundlagen">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <h2>Grundlagen der OOP</h2>
+  </div>
+
+  <h3>Was ist eine Klasse?</h3>
+  <p>Eine <strong>Klasse</strong> ist ein <em>Bauplan</em> oder eine <em>Vorlage</em>. Sie beschreibt, welche <strong>Eigenschaften</strong> (Attribute) und <strong>Fähigkeiten</strong> (Methoden) etwas hat – aber sie ist noch kein konkretes Ding.</p>
+
+  <div class="highlight">
+    <strong>Analogie:</strong> Eine Klasse ist wie ein Kuchenrezept. Das Rezept beschreibt, wie der Kuchen aussieht – aber es ist noch kein echter Kuchen. Erst wenn du nach dem Rezept backst, entsteht ein Objekt (= echter Kuchen).
+  </div>
+
+  <h3>Was ist ein Objekt?</h3>
+  <p>Ein <strong>Objekt</strong> ist ein konkretes <em>Exemplar</em> einer Klasse. Es wurde nach dem Bauplan (der Klasse) erzeugt und hat echte Werte für seine Eigenschaften.</p>
+
+  <div class="card-row">
+    <div class="card accent-blue">
+      <h4>Klasse</h4>
+      <ul>
+        <li>Bauplan / Vorlage</li>
+        <li>Beschreibt <em>was</em> ein Ding ist</li>
+        <li>Existiert nur einmal im Code</li>
+        <li>Hat noch keine konkreten Werte</li>
+      </ul>
+    </div>
+    <div class="card accent-green">
+      <h4>Objekt (= Instanz)</h4>
+      <ul>
+        <li>Konkretes Exemplar der Klasse</li>
+        <li>Hat echte, individuelle Werte</li>
+        <li>Kann viele Male erzeugt werden</li>
+        <li>Verhält sich laut Bauplan</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Instanz & Abstraktion einfach erklärt</h3>
+
+  <div class="card-row">
+    <div class="card accent-purple">
+      <h4>Instanz</h4>
+      <p style="font-size:0.88rem;">Instanz = anderes Wort für Objekt. Wenn du ein Objekt aus einer Klasse erzeugst, nennt man das „eine Instanz der Klasse erstellen".</p>
+      <p style="font-size:0.85rem; color:var(--muted);">bello ist eine Instanz der Klasse <code>Hund</code>.</p>
+    </div>
+    <div class="card accent-orange">
+      <h4>Abstraktion</h4>
+      <p style="font-size:0.88rem;">Abstraktion bedeutet: Du legst nur das Wesentliche fest und lässt unnötige Details weg. Eine Klasse <code>Auto</code> hat z.&nbsp;B. <code>farbe</code> und <code>marke</code> – aber keine Reifenprofiltiefe (wäre zu viel Detail).</p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ==================== 2. UML ==================== -->
+<section id="uml">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <h2>UML & Diagramme</h2>
+  </div>
+
+  <p>UML steht für <strong>Unified Modeling Language</strong> – eine Standardsprache, um Programme grafisch darzustellen, bevor man sie codiert.</p>
+
+  <h3>Klassendiagramm</h3>
+  <p>Ein Klassendiagramm zeigt den <strong>Bauplan</strong> einer Klasse: Name, Attribute (mit Datentyp) und Methoden (mit Parameter & Rückgabetyp).</p>
+
+  <div class="uml-container">
+    <div>
+      <div class="uml-class">
+        <div class="uml-class-name">Hund</div>
+        <div class="uml-section">
+          <div class="uml-item"><span class="vis-priv">−</span> name : str</div>
+          <div class="uml-item"><span class="vis-priv">−</span> alter : int</div>
+          <div class="uml-item"><span class="vis-priv">−</span> rasse : str</div>
+        </div>
+        <div class="uml-section">
+          <div class="uml-item"><span class="vis-pub">+</span> __init__(name, alter, rasse)</div>
+          <div class="uml-item"><span class="vis-pub">+</span> bellen() : str</div>
+          <div class="uml-item"><span class="vis-pub">+</span> get_name() : str</div>
+        </div>
+      </div>
+      <div class="rel-label">Klassendiagramm (Bauplan)</div>
+    </div>
+  </div>
+
+  <div class="highlight purple">
+    <strong>Legende der Symbole:</strong><br>
+    <span style="color:var(--accent3)">+</span> = public (öffentlich) &nbsp;|&nbsp;
+    <span style="color:var(--accent5)">−</span> = private (privat) &nbsp;|&nbsp;
+    <span style="color:var(--accent4)">#</span> = protected (geschützt)
+  </div>
+
+  <h3>Objektdiagramm</h3>
+  <p>Ein Objektdiagramm zeigt <strong>konkrete Objekte</strong> mit ihren echten Werten – also einen Schnappschuss des Programms zu einem bestimmten Zeitpunkt. Der Name ist <u>unterstrichen</u> und besteht aus: <code>objektname : Klassenname</code></p>
+
+  <div class="uml-container">
+    <div>
+      <div class="uml-object">
+        <div class="uml-object-name">bello : Hund</div>
+        <div class="uml-section">
+          <div class="uml-item">name = "Bello"</div>
+          <div class="uml-item">alter = 3</div>
+          <div class="uml-item">rasse = "Labrador"</div>
+        </div>
+      </div>
+      <div class="rel-label">Objekt 1</div>
+    </div>
+    <div>
+      <div class="uml-object">
+        <div class="uml-object-name">luna : Hund</div>
+        <div class="uml-section">
+          <div class="uml-item">name = "Luna"</div>
+          <div class="uml-item">alter = 5</div>
+          <div class="uml-item">rasse = "Husky"</div>
+        </div>
+      </div>
+      <div class="rel-label">Objekt 2</div>
+    </div>
+  </div>
+
+  <h3>Unterschied: Klassen- vs. Objektdiagramm</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Merkmal</th><th>Klassendiagramm</th><th>Objektdiagramm</th></tr></thead>
+      <tbody>
+        <tr><td>Zeigt</td><td>Den Bauplan (allgemein)</td><td>Ein konkretes Objekt (speziell)</td></tr>
+        <tr><td>Werte</td><td>Nur Datentypen (z.&nbsp;B. <code>str</code>)</td><td>Echte Werte (z.&nbsp;B. <code>"Bello"</code>)</td></tr>
+        <tr><td>Name unterstrichen?</td><td>Nein</td><td>Ja (<u>bello : Hund</u>)</td></tr>
+        <tr><td>Methoden sichtbar?</td><td>Ja</td><td>Nein (Methoden kommen aus der Klasse)</td></tr>
+        <tr><td>Zeitpunkt</td><td>Immer gültig (statisch)</td><td>Momentaufnahme des Programmlaufs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Vom Klassendiagramm zum Objektdiagramm</h3>
+  <div class="card accent-green">
+    <p style="font-size:0.9rem;"><strong>So geht's Schritt für Schritt:</strong></p>
+    <ol>
+      <li>Gib dem Objekt einen Namen (z.&nbsp;B. <code>bello</code>) und schreibe: <code><u>bello : Hund</u></code></li>
+      <li>Übernehme alle Attribute aus dem Klassendiagramm</li>
+      <li>Ersetze die Datentypen durch echte Werte (<code>str</code> → <code>"Bello"</code>)</li>
+      <li>Methoden weglassen – sie kommen von der Klasse</li>
+    </ol>
+  </div>
+
+  <h3>Implementationsdiagramm (kurz erklärt)</h3>
+  <p>Ein Implementationsdiagramm zeigt, <strong>wie der Code wirklich aufgebaut ist</strong> – also welche Dateien/Module existieren und wie sie zusammenarbeiten. Es ist weniger abstrakt als ein Klassendiagramm und näher am echten Code.</p>
+  <div class="tip">Im Unterricht ist das Klassendiagramm am wichtigsten. Das Implementationsdiagramm ist eher für größere Projekte relevant.</div>
+
+</section>
+
+
+<!-- ==================== 3. BEZIEHUNGEN ==================== -->
+<section id="beziehungen">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <h2>Beziehungen zwischen Klassen</h2>
+  </div>
+
+  <h3>Assoziation</h3>
+  <p>Eine <strong>Assoziation</strong> bedeutet: Zwei Klassen <em>kennen sich</em> und können miteinander kommunizieren – aber keine Klasse besitzt die andere. Sie sind unabhängig voneinander.</p>
+
+  <div class="card accent-blue">
+    <p><strong>Beispiel:</strong> Eine <code>Person</code> fährt ein <code>Auto</code>. Das Auto existiert auch ohne die Person.</p>
+    <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin:0.8rem 0;">
+      <div class="uml-class" style="min-width:120px;">
+        <div class="uml-class-name">Person</div>
+        <div class="uml-section"><div class="uml-item">name : str</div></div>
+      </div>
+      <div style="text-align:center;min-width:80px;">
+        <div style="color:var(--muted);font-size:0.85rem;">─────────&nbsp;fährt&nbsp;─────────→</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:2px;">Assoziation</div>
+      </div>
+      <div class="uml-class" style="min-width:120px;">
+        <div class="uml-class-name">Auto</div>
+        <div class="uml-section"><div class="uml-item">marke : str</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">python · assoziation.py</div>
+    <pre><span class="kw">class</span> <span class="cl">Auto</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, marke: <span class="fn">str</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.marke = marke  <span class="cm"># Attribut</span>
+
+<span class="kw">class</span> <span class="cl">Person</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name: <span class="fn">str</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.name = name
+
+    <span class="kw">def</span> <span class="fn">fahren</span>(<span class="kw">self</span>, auto: <span class="cl">Auto</span>) -> <span class="fn">str</span>:
+        <span class="kw">return</span> <span class="st">f"</span>{<span class="kw">self</span>.name}<span class="st"> fährt </span>{auto.marke}<span class="st">"</span>  <span class="cm"># Assoziation: Person kennt Auto</span>
+
+<span class="cm"># Objekte erzeugen</span>
+mein_auto = <span class="cl">Auto</span>(<span class="st">"BMW"</span>)
+anna = <span class="cl">Person</span>(<span class="st">"Anna"</span>)
+<span class="fn">print</span>(anna.fahren(mein_auto))  <span class="cm"># → "Anna fährt BMW"</span></pre>
+  </div>
+
+  <h3>Aggregation</h3>
+  <p>Eine <strong>Aggregation</strong> ist eine stärkere Beziehung: Die eine Klasse <em>enthält</em> die andere – aber die enthaltene Klasse kann auch alleine existieren. Im Diagramm erkennst du sie an einer <strong>offenen Raute (◇)</strong>.</p>
+
+  <div class="highlight orange">
+    <strong>Merkhilfe:</strong> Bei Aggregation gilt: „Das Teil kann ohne das Ganze leben."<br>
+    Ein Schüler (Teil) existiert auch, wenn seine Klasse (Ganze) aufgelöst wird.
+  </div>
+
+  <div class="card accent-orange">
+    <p><strong>Beispiel:</strong> Eine <code>Schulklasse</code> enthält mehrere <code>Schueler</code>. Die Schüler existieren aber auch, wenn die Klasse aufgelöst wird.</p>
+    <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin:0.8rem 0;">
+      <div class="uml-class" style="min-width:140px;">
+        <div class="uml-class-name">Schulklasse</div>
+        <div class="uml-section"><div class="uml-item">name : str</div></div>
+      </div>
+      <div style="text-align:center;min-width:100px;">
+        <div style="color:var(--accent4);font-size:0.9rem;">◇────────────</div>
+        <div style="font-size:0.7rem;color:var(--muted);">Aggregation &nbsp;1 &nbsp;&nbsp;&nbsp;&nbsp; 0..*</div>
+      </div>
+      <div class="uml-class" style="min-width:120px;">
+        <div class="uml-class-name">Schueler</div>
+        <div class="uml-section"><div class="uml-item">name : str</div></div>
+      </div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;"><strong>Multiplizität:</strong> 1 Schulklasse hat 0..* (null bis viele) Schüler</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">python · aggregation.py</div>
+    <pre><span class="kw">class</span> <span class="cl">Schueler</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name: <span class="fn">str</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.name = name
+
+<span class="kw">class</span> <span class="cl">Schulklasse</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, bezeichnung: <span class="fn">str</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.bezeichnung = bezeichnung
+        <span class="kw">self</span>.schueler: <span class="fn">list</span>[<span class="cl">Schueler</span>] = []  <span class="cm"># Liste enthält Schueler-Objekte</span>
+
+    <span class="kw">def</span> <span class="fn">add_schueler</span>(<span class="kw">self</span>, s: <span class="cl">Schueler</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.schueler.append(s)  <span class="cm"># Schüler zur Klasse hinzufügen</span>
+
+    <span class="kw">def</span> <span class="fn">zeige_liste</span>(<span class="kw">self</span>) -> <span class="kw">None</span>:
+        <span class="kw">for</span> s <span class="kw">in</span> <span class="kw">self</span>.schueler:
+            <span class="fn">print</span>(s.name)
+
+<span class="cm"># Schüler können unabhängig von der Klasse existieren</span>
+tim = <span class="cl">Schueler</span>(<span class="st">"Tim"</span>)
+lea = <span class="cl">Schueler</span>(<span class="st">"Lea"</span>)
+klasse_10a = <span class="cl">Schulklasse</span>(<span class="st">"10a"</span>)
+klasse_10a.add_schueler(tim)
+klasse_10a.add_schueler(lea)
+klasse_10a.zeige_liste()  <span class="cm"># → Tim, Lea</span></pre>
+  </div>
+
+  <h3>Übersicht: Beziehungstypen</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Beziehung</th><th>Symbol</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td>Assoziation</td><td>─────→</td><td>„kennt" / „benutzt"</td><td>Person fährt Auto</td></tr>
+        <tr><td>Aggregation</td><td>◇────</td><td>„enthält" (Teil kann alleine existieren)</td><td>Klasse enthält Schüler</td></tr>
+        <tr><td>Komposition</td><td>◆────</td><td>„besteht aus" (Teil stirbt mit dem Ganzen)</td><td>Haus hat Zimmer</td></tr>
+        <tr><td>Vererbung</td><td>──▷</td><td>„ist ein" (Unterklasse erbt von Oberklasse)</td><td>Hund ist ein Tier</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+
+<!-- ==================== 4. SICHTBARKEIT ==================== -->
+<section id="sichtbarkeit">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <h2>Sichtbarkeiten</h2>
+  </div>
+
+  <p>Sichtbarkeit bestimmt, wer auf ein Attribut oder eine Methode zugreifen darf.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Symbol</th><th>Name</th><th>Python-Schreibweise</th><th>Zugriff</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-pub">+</span></td>
+          <td>public</td>
+          <td><code>self.name</code></td>
+          <td>Von überall erreichbar</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-prot">#</span></td>
+          <td>protected</td>
+          <td><code>self._name</code> <em>(ein Unterstrich)</em></td>
+          <td>Nur in der Klasse & Unterklassen (Konvention)</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-priv">−</span></td>
+          <td>private</td>
+          <td><code>self.__name</code> <em>(zwei Unterstriche)</em></td>
+          <td>Nur innerhalb der Klasse selbst</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tip">In Python sind Sichtbarkeiten teilweise Konvention, kein hartes Verbot. Zwei Unterstriche (<code>__</code>) erzeugen aber echtes Name-Mangling und erschweren externen Zugriff wirklich.</div>
+
+  <div class="code-block">
+    <div class="code-label">python · sichtbarkeit.py</div>
+    <pre><span class="kw">class</span> <span class="cl">Bankkonto</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, inhaber: <span class="fn">str</span>, kontostand: <span class="fn">float</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.inhaber = inhaber          <span class="cm"># public  → jeder darf zugreifen</span>
+        <span class="kw">self</span>._bank = <span class="st">"Sparkasse"</span>       <span class="cm"># protected → nur intern & Unterklassen</span>
+        <span class="kw">self</span>.__kontostand = kontostand  <span class="cm"># private → nur innerhalb der Klasse</span>
+
+    <span class="kw">def</span> <span class="fn">get_kontostand</span>(<span class="kw">self</span>) -> <span class="fn">float</span>:  <span class="cm"># Getter</span>
+        <span class="kw">return</span> <span class="kw">self</span>.__kontostand
+
+    <span class="kw">def</span> <span class="fn">set_kontostand</span>(<span class="kw">self</span>, betrag: <span class="fn">float</span>) -> <span class="kw">None</span>:  <span class="cm"># Setter</span>
+        <span class="kw">if</span> betrag >= <span class="nm">0</span>:  <span class="cm"># Validierung!</span>
+            <span class="kw">self</span>.__kontostand = betrag
+
+konto = <span class="cl">Bankkonto</span>(<span class="st">"Max"</span>, <span class="nm">1000.0</span>)
+<span class="fn">print</span>(konto.inhaber)           <span class="cm"># ✅ "Max"</span>
+<span class="fn">print</span>(konto.get_kontostand())  <span class="cm"># ✅ 1000.0 (über Getter)</span>
+<span class="cm"># print(konto.__kontostand)   # ❌ Fehler! Direkt nicht erlaubt</span></pre>
+  </div>
+
+  <h3>Warum Getter & Setter?</h3>
+  <div class="card-row">
+    <div class="card accent-blue">
+      <h4>Problem ohne Getter/Setter</h4>
+      <p style="font-size:0.88rem;">Wenn Attribute public sind, kann jeder beliebige (auch ungültige) Werte setzen:</p>
+      <code style="font-size:0.8rem;color:var(--accent5);">konto.kontostand = -99999  # 😱 Möglich!</code>
+    </div>
+    <div class="card accent-green">
+      <h4>Lösung mit Getter/Setter</h4>
+      <p style="font-size:0.88rem;">Ein Setter kann Werte prüfen, bevor sie gespeichert werden – <strong>Datenkapselung</strong>:</p>
+      <code style="font-size:0.8rem;color:var(--accent3);">konto.set_kontostand(-1)  # 🛡️ Wird ignoriert</code>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ==================== 5. PYTHON CODE ==================== -->
+<section id="python">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <h2>Programmierung in Python</h2>
+  </div>
+
+  <h3>Klasse definieren (mit __init__)</h3>
+  <p><code>__init__</code> ist der <strong>Konstruktor</strong> – er wird automatisch aufgerufen, wenn ein Objekt erzeugt wird.</p>
+
+  <div class="code-block">
+    <div class="code-label">python · klasse_definieren.py</div>
+    <pre><span class="kw">class</span> <span class="cl">Tier</span>:
+    <span class="cm">"""Eine einfache Tier-Klasse als Beispiel."""</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name: <span class="fn">str</span>, alter: <span class="fn">int</span>, tierart: <span class="fn">str</span>) -> <span class="kw">None</span>:
+        <span class="cm"># self = Verweis auf das aktuelle Objekt</span>
+        <span class="kw">self</span>.name = name          <span class="cm"># Attribut speichern</span>
+        <span class="kw">self</span>.alter = alter
+        <span class="kw">self</span>.tierart = tierart
+
+    <span class="kw">def</span> <span class="fn">beschreibung</span>(<span class="kw">self</span>) -> <span class="fn">str</span>:
+        <span class="cm"># Methode gibt einen String zurück</span>
+        <span class="kw">return</span> <span class="st">f"</span>{<span class="kw">self</span>.name}<span class="st"> ist ein </span>{<span class="kw">self</span>.tierart}<span class="st"> und </span>{<span class="kw">self</span>.alter}<span class="st"> Jahre alt."</span>
+
+    <span class="kw">def</span> <span class="fn">geburtstag</span>(<span class="kw">self</span>) -> <span class="kw">None</span>:
+        <span class="cm"># Methode verändert ein Attribut</span>
+        <span class="kw">self</span>.alter += <span class="nm">1</span>
+        <span class="fn">print</span>(<span class="st">f"</span>{<span class="kw">self</span>.name}<span class="st"> ist jetzt </span>{<span class="kw">self</span>.alter}<span class="st">!"</span>)</pre>
+  </div>
+
+  <h3>Objekte erzeugen und verwenden</h3>
+  <div class="code-block">
+    <div class="code-label">python · objekte.py</div>
+    <pre><span class="cm"># Objekte erzeugen (= Instanzen erstellen)</span>
+katze1 = <span class="cl">Tier</span>(<span class="st">"Mia"</span>, <span class="nm">3</span>, <span class="st">"Katze"</span>)   <span class="cm"># __init__ wird aufgerufen</span>
+katze2 = <span class="cl">Tier</span>(<span class="st">"Leo"</span>, <span class="nm">7</span>, <span class="st">"Kater"</span>)
+
+<span class="cm"># Auf Attribute zugreifen</span>
+<span class="fn">print</span>(katze1.name)   <span class="cm"># → "Mia"</span>
+<span class="fn">print</span>(katze2.alter)  <span class="cm"># → 7</span>
+
+<span class="cm"># Methoden aufrufen</span>
+<span class="fn">print</span>(katze1.beschreibung())  <span class="cm"># → "Mia ist eine Katze und 3 Jahre alt."</span>
+katze1.geburtstag()           <span class="cm"># → "Mia ist jetzt 4!"</span>
+
+<span class="cm"># Attribut direkt ändern (wenn public)</span>
+katze2.name = <span class="st">"Simba"</span>
+<span class="fn">print</span>(katze2.name)  <span class="cm"># → "Simba"</span></pre>
+  </div>
+
+  <h3>Objekte in Listen speichern und nutzen</h3>
+  <div class="code-block">
+    <div class="code-label">python · objekte_in_listen.py</div>
+    <pre><span class="cm"># Liste von Objekten erstellen</span>
+tiere: <span class="fn">list</span>[<span class="cl">Tier</span>] = []  <span class="cm"># Type Hint: Liste enthält Tier-Objekte</span>
+
+tiere.append(<span class="cl">Tier</span>(<span class="st">"Bello"</span>,  <span class="nm">2</span>, <span class="st">"Hund"</span>))
+tiere.append(<span class="cl">Tier</span>(<span class="st">"Nemo"</span>,   <span class="nm">1</span>, <span class="st">"Fisch"</span>))
+tiere.append(<span class="cl">Tier</span>(<span class="st">"Tweety"</span>, <span class="nm">4</span>, <span class="st">"Vogel"</span>))
+
+<span class="cm"># Alle Tiere ausgeben (for-Schleife)</span>
+<span class="kw">for</span> tier <span class="kw">in</span> tiere:
+    <span class="fn">print</span>(tier.beschreibung())
+
+<span class="cm"># Bestimmtes Tier suchen</span>
+<span class="kw">for</span> tier <span class="kw">in</span> tiere:
+    <span class="kw">if</span> tier.name == <span class="st">"Nemo"</span>:
+        <span class="fn">print</span>(<span class="st">"Gefunden!"</span>, tier.beschreibung())</pre>
+  </div>
+
+  <h3>Type Hints – Parameter und Rückgabewerte</h3>
+  <p>Type Hints machen den Code lesbarer und helfen der IDE bei der Fehlersuche. Sie sind optional, aber empfohlen.</p>
+
+  <div class="code-block">
+    <div class="code-label">python · type_hints.py</div>
+    <pre><span class="kw">class</span> <span class="cl">Rechner</span>:
+
+    <span class="cm"># Parameter: a und b sind int, Rückgabe ist int</span>
+    <span class="kw">def</span> <span class="fn">addiere</span>(<span class="kw">self</span>, a: <span class="fn">int</span>, b: <span class="fn">int</span>) -> <span class="fn">int</span>:
+        <span class="kw">return</span> a + b
+
+    <span class="cm"># Rückgabe ist float</span>
+    <span class="kw">def</span> <span class="fn">teile</span>(<span class="kw">self</span>, a: <span class="fn">float</span>, b: <span class="fn">float</span>) -> <span class="fn">float</span>:
+        <span class="kw">return</span> a / b
+
+    <span class="cm"># Kein Rückgabewert → None</span>
+    <span class="kw">def</span> <span class="fn">zeige_info</span>(<span class="kw">self</span>, text: <span class="fn">str</span>) -> <span class="kw">None</span>:
+        <span class="fn">print</span>(<span class="st">f"Info: </span>{text}<span class="st">"</span>)
+
+    <span class="cm"># Parameter kann None sein → Optional mit | None</span>
+    <span class="kw">def</span> <span class="fn">set_name</span>(<span class="kw">self</span>, name: <span class="fn">str</span> | <span class="kw">None</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.name = name</pre>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Typ</th><th>Beispiel</th><th>Bedeutung</th></tr></thead>
+      <tbody>
+        <tr><td><code>str</code></td><td><code>name: str</code></td><td>Text</td></tr>
+        <tr><td><code>int</code></td><td><code>alter: int</code></td><td>Ganze Zahl</td></tr>
+        <tr><td><code>float</code></td><td><code>preis: float</code></td><td>Kommazahl</td></tr>
+        <tr><td><code>bool</code></td><td><code>aktiv: bool</code></td><td>True / False</td></tr>
+        <tr><td><code>list[str]</code></td><td><code>namen: list[str]</code></td><td>Liste von Strings</td></tr>
+        <tr><td><code>None</code></td><td><code>-> None</code></td><td>Kein Rückgabewert</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Vollständiges Beispiel: Klasse mit allem</h3>
+  <div class="code-block">
+    <div class="code-label">python · vollstaendiges_beispiel.py</div>
+    <pre><span class="kw">class</span> <span class="cl">Schueler</span>:
+    <span class="cm">"""Repräsentiert einen Schüler mit Name, Alter und Noten."""</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name: <span class="fn">str</span>, alter: <span class="fn">int</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.name = name
+        <span class="kw">self</span>.alter = alter
+        <span class="kw">self</span>.__noten: <span class="fn">list</span>[<span class="fn">int</span>] = []  <span class="cm"># private: Noten geschützt</span>
+
+    <span class="kw">def</span> <span class="fn">note_hinzufuegen</span>(<span class="kw">self</span>, note: <span class="fn">int</span>) -> <span class="kw">None</span>:
+        <span class="kw">if</span> <span class="nm">1</span> <= note <= <span class="nm">6</span>:  <span class="cm"># Validierung</span>
+            <span class="kw">self</span>.__noten.append(note)
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="st">"Ungültige Note!"</span>)
+
+    <span class="kw">def</span> <span class="fn">get_durchschnitt</span>(<span class="kw">self</span>) -> <span class="fn">float</span>:
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.__noten:
+            <span class="kw">return</span> <span class="nm">0.0</span>
+        <span class="kw">return</span> <span class="fn">sum</span>(<span class="kw">self</span>.__noten) / <span class="fn">len</span>(<span class="kw">self</span>.__noten)
+
+    <span class="kw">def</span> <span class="fn">get_noten</span>(<span class="kw">self</span>) -> <span class="fn">list</span>[<span class="fn">int</span>]:  <span class="cm"># Getter</span>
+        <span class="kw">return</span> <span class="kw">self</span>.__noten.copy()  <span class="cm"># Kopie zurückgeben</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="kw">self</span>) -> <span class="fn">str</span>:  <span class="cm"># Für print()-Ausgabe</span>
+        <span class="kw">return</span> <span class="st">f"</span>{<span class="kw">self</span>.name}<span class="st"> (</span>{<span class="kw">self</span>.alter}<span class="st"> J.) – Ø </span>{<span class="kw">self</span>.get_durchschnitt():<span class="nm">.1f</span>}<span class="st">"</span>
+
+
+<span class="cm"># --- Hauptprogramm ---</span>
+klasse: <span class="fn">list</span>[<span class="cl">Schueler</span>] = []
+
+s1 = <span class="cl">Schueler</span>(<span class="st">"Anna"</span>, <span class="nm">16</span>)
+s1.note_hinzufuegen(<span class="nm">2</span>)
+s1.note_hinzufuegen(<span class="nm">1</span>)
+s1.note_hinzufuegen(<span class="nm">3</span>)
+
+s2 = <span class="cl">Schueler</span>(<span class="st">"Ben"</span>, <span class="nm">17</span>)
+s2.note_hinzufuegen(<span class="nm">4</span>)
+s2.note_hinzufuegen(<span class="nm">3</span>)
+
+klasse.extend([s1, s2])
+
+<span class="kw">for</span> schueler <span class="kw">in</span> klasse:
+    <span class="fn">print</span>(schueler)  <span class="cm"># nutzt __str__ automatisch</span>
+<span class="cm"># → Anna (16 J.) – Ø 2.0</span>
+<span class="cm"># → Ben  (17 J.) – Ø 3.5</span></pre>
+  </div>
+
+</section>
+
+
+<!-- ==================== 6. NAMENSKONVENTIONEN ==================== -->
+<section id="namen">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <h2>Namenskonventionen in Python</h2>
+  </div>
+
+  <p>Python hat offizielle Regeln für Bezeichnungen (definiert im <strong>PEP 8</strong> Style Guide):</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Was?</th><th>Stil</th><th>Beispiele</th><th>Falsch</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Klassen</strong></td>
+          <td>PascalCase</td>
+          <td><span class="conv-class">Schueler, BankKonto, MeinTier</span></td>
+          <td><code style="color:var(--accent5)">schueler, bank_konto</code></td>
+        </tr>
+        <tr>
+          <td><strong>Methoden</strong></td>
+          <td>snake_case</td>
+          <td><span class="conv-func">get_name(), berechne_sum(), zeige_info()</span></td>
+          <td><code style="color:var(--accent5)">GetName(), berechneSumme()</code></td>
+        </tr>
+        <tr>
+          <td><strong>Attribute / Variablen</strong></td>
+          <td>snake_case</td>
+          <td><span class="conv-var">mein_name, alter, kontostand</span></td>
+          <td><code style="color:var(--accent5)">MeinName, meinName</code></td>
+        </tr>
+        <tr>
+          <td><strong>Konstanten</strong></td>
+          <td>UPPER_CASE</td>
+          <td><span class="conv-const">MAX_GROESSE, PI, STANDARD_WERT</span></td>
+          <td><code style="color:var(--accent5)">max_groesse, pi</code></td>
+        </tr>
+        <tr>
+          <td><strong>Private Attribute</strong></td>
+          <td>__snake_case</td>
+          <td><span class="conv-var">__kontostand, __passwort</span></td>
+          <td><code style="color:var(--accent5)">kontostand_ (ein Unterstrich allein)</code></td>
+        </tr>
+        <tr>
+          <td><strong>Protected Attribute</strong></td>
+          <td>_snake_case</td>
+          <td><span class="conv-var">_intern, _bank_name</span></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><strong>Dateien/Module</strong></td>
+          <td>snake_case</td>
+          <td><span class="conv-func">mein_programm.py, bank_konto.py</span></td>
+          <td><code style="color:var(--accent5)">MeinProgramm.py</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">python · namenskonventionen.py</div>
+    <pre><span class="cm"># ✅ Korrekte Namensgebung in Python</span>
+
+MAX_PUNKTE = <span class="nm">100</span>  <span class="cm"># Konstante → UPPER_CASE</span>
+
+<span class="kw">class</span> <span class="cl">SpielCharakter</span>:  <span class="cm"># Klasse → PascalCase</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, spieler_name: <span class="fn">str</span>, lebenspunkte: <span class="fn">int</span>) -> <span class="kw">None</span>:
+        <span class="kw">self</span>.spieler_name = spieler_name   <span class="cm"># Attribut → snake_case</span>
+        <span class="kw">self</span>.__lebenspunkte = lebenspunkte  <span class="cm"># privat → __snake_case</span>
+        <span class="kw">self</span>._level = <span class="nm">1</span>                    <span class="cm"># protected → _snake_case</span>
+
+    <span class="kw">def</span> <span class="fn">get_lebenspunkte</span>(<span class="kw">self</span>) -> <span class="fn">int</span>:   <span class="cm"># Methode → snake_case</span>
+        <span class="kw">return</span> <span class="kw">self</span>.__lebenspunkte
+
+    <span class="kw">def</span> <span class="fn">erhoehe_level</span>(<span class="kw">self</span>) -> <span class="kw">None</span>:    <span class="cm"># Methode → snake_case</span>
+        <span class="kw">self</span>._level += <span class="nm">1</span>
+
+held = <span class="cl">SpielCharakter</span>(<span class="st">"Aragorn"</span>, <span class="nm">100</span>)  <span class="cm"># Variable → snake_case</span>
+<span class="fn">print</span>(held.spieler_name)               <span class="cm"># → "Aragorn"</span></pre>
+  </div>
+
+  <div class="highlight green">
+    <strong>PascalCase</strong> = Jedes Wort beginnt mit Großbuchstabe: <code>MeinKlassenName</code><br>
+    <strong>snake_case</strong> = Alles klein, Wörter mit Unterstrich: <code>mein_methoden_name</code><br>
+    <strong>UPPER_CASE</strong> = Alles groß, Wörter mit Unterstrich: <code>MEINE_KONSTANTE</code>
+  </div>
+
+</section>
+
+<!-- ==================== ZUSAMMENFASSUNG ==================== -->
+<section>
+  <div class="section-header">
+    <div class="section-num" style="background: linear-gradient(135deg, var(--accent3), var(--accent));">✓</div>
+    <h2>Schnell-Zusammenfassung</h2>
+  </div>
+
+  <div class="card-row">
+    <div class="card accent-blue">
+      <h4>Klasse</h4>
+      <p style="font-size:0.85rem;">Bauplan mit Attributen & Methoden. Definiert mit <code>class Name:</code></p>
+    </div>
+    <div class="card accent-green">
+      <h4>Objekt / Instanz</h4>
+      <p style="font-size:0.85rem;">Konkretes Exemplar. Erzeugt mit <code>obj = Klasse(...)</code></p>
+    </div>
+    <div class="card accent-purple">
+      <h4>__init__</h4>
+      <p style="font-size:0.85rem;">Konstruktor. Wird beim Erstellen automatisch aufgerufen.</p>
+    </div>
+    <div class="card accent-orange">
+      <h4>self</h4>
+      <p style="font-size:0.85rem;">Zeigt auf das aktuelle Objekt. Immer erster Parameter einer Methode.</p>
+    </div>
+  </div>
+  <div class="card-row">
+    <div class="card accent-pink">
+      <h4>Sichtbarkeit</h4>
+      <p style="font-size:0.85rem;"><code>name</code> = public &nbsp;|&nbsp; <code>_name</code> = protected &nbsp;|&nbsp; <code>__name</code> = private</p>
+    </div>
+    <div class="card accent-blue">
+      <h4>UML-Klassendiagramm</h4>
+      <p style="font-size:0.85rem;">Bauplan grafisch. Zeigt Klassen, Attribute, Methoden & Beziehungen.</p>
+    </div>
+    <div class="card accent-green">
+      <h4>UML-Objektdiagramm</h4>
+      <p style="font-size:0.85rem;">Momentaufnahme. Zeigt Objekte mit echten Werten. Name unterstrichen.</p>
+    </div>
+    <div class="card accent-orange">
+      <h4>Namensregeln</h4>
+      <p style="font-size:0.85rem;">Klassen: <code>PascalCase</code> &nbsp;|&nbsp; Methoden/Vars: <code>snake_case</code> &nbsp;|&nbsp; Konstanten: <code>UPPER_CASE</code></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Lernzettel · OOP in Python · Erstellt für die Klassenarbeitsvorbereitung
+</footer>
+
+</body>
+</html>
