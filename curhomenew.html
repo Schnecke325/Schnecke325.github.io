@@ -466,6 +466,16 @@
       to { opacity: 1; }
     }
 
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+    }
+    .dot-online {
+      background: #4ade80 !important;
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    .dot-offline { background: #ef4444 !important; }
+
     @keyframes scrollPulse {
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
@@ -542,9 +552,13 @@
         <span class="stat-val">Create</span>
         <span class="stat-label" data-de="Kern-Mod" data-en="Core Mod">Kern-Mod</span>
       </div>
-      <div class="stat">
-        <span class="stat-val">24/7</span>
-        <span class="stat-label" data-de="Server online" data-en="Server Online">Server online</span>
+      <div class="stat" id="serverStatBlock">
+        <span class="stat-val" id="serverStatusVal" style="display:flex;align-items:center;gap:10px;">
+          <span id="statusDot" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--muted);flex-shrink:0;"></span>
+          <span id="statusText">...</span>
+        </span>
+        <span class="stat-label" id="serverStatusLabel" data-de="Server Status" data-en="Server Status">Server Status</span>
+        <span style="font-size:0.7rem;color:var(--muted);margin-top:4px;" id="serverPlayers"></span>
       </div>
       <div class="stat">
         <span class="stat-val">Smp</span>
@@ -680,6 +694,41 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
     }, { threshold: 0.1 });
     revealEls.forEach(el => observer.observe(el));
+
+    /* Server Status via mcsrvstat.us */
+    const SERVER_HOST = '87.118.114.70';
+    const SERVER_PORT = 25581;
+
+    async function fetchServerStatus() {
+      const dot = document.getElementById('statusDot');
+      const txt = document.getElementById('statusText');
+      const players = document.getElementById('serverPlayers');
+      try {
+        const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_HOST}:${SERVER_PORT}`);
+        const data = await res.json();
+        if (data.online) {
+          dot.className = 'dot-online';
+          txt.textContent = 'Online';
+          txt.style.color = '#4ade80';
+          const online = data.players?.online ?? 0;
+          const max = data.players?.max ?? '?';
+          players.textContent = `${online} / ${max} Spieler`;
+        } else {
+          dot.className = 'dot-offline';
+          txt.textContent = 'Offline';
+          txt.style.color = '#ef4444';
+          players.textContent = '';
+        }
+      } catch(e) {
+        dot.className = '';
+        dot.style.background = 'var(--muted)';
+        txt.textContent = '–';
+        players.textContent = '';
+      }
+    }
+
+    fetchServerStatus();
+    setInterval(fetchServerStatus, 60000); // jede Minute neu prüfen
 
     /* Language toggle */
     const langBtn = document.getElementById('langToggle');
