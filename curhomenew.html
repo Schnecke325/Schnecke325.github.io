@@ -1,1 +1,700 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create: Unlimited Rails</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #f0a500;
+      --gold-dim: #a06e00;
+      --dark: #0a0a0b;
+      --dark2: #111113;
+      --dark3: #1a1a1e;
+      --text: #e8e6e0;
+      --muted: #888680;
+      --rail: #2a2820;
+    }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── Rail texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 48px,
+        rgba(240,165,0,0.018) 48px,
+        rgba(240,165,0,0.018) 50px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 0 2rem;
+      background: linear-gradient(to bottom, rgba(10,10,11,0.95), transparent);
+      backdrop-filter: blur(8px);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      border-bottom: 1px solid rgba(240,165,0,0.12);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--text); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--gold); }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(240,165,0,0.4);
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 5px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url(https://schnecke325.github.io/2025-08-04_21.08.57_edited.png);
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.45);
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
+    }
+
+    .hero-bg.loaded { transform: scale(1); }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,11,1) 0%, rgba(10,10,11,0.4) 40%, transparent 70%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem 5rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.45s;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.65s;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.85s;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #000;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 13px 28px;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #ffc42a;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(240,165,0,0.4);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 13px 28px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ── SCROLL INDICATOR ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1.4s;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--dark2);
+      border-top: 1px solid rgba(240,165,0,0.1);
+      border-bottom: 1px solid rgba(240,165,0,0.1);
+      padding: 1.5rem 2rem;
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTION ── */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 4rem;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 1.05rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-image {
+      position: relative;
+    }
+
+    .about-image img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .about-image::before {
+      content: '';
+      position: absolute;
+      inset: -10px -10px 10px 10px;
+      border: 1px solid rgba(240,165,0,0.2);
+      z-index: -1;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-section {
+      background: var(--dark2);
+      overflow: hidden;
+    }
+
+    .gallery-track {
+      display: flex;
+      gap: 1rem;
+      overflow: hidden;
+      padding: 0 2rem;
+    }
+
+    .gallery-img {
+      flex: 0 0 auto;
+      width: 340px;
+      height: 220px;
+      object-fit: cover;
+      filter: grayscale(20%);
+      transition: all 0.5s ease;
+    }
+
+    .gallery-img:hover {
+      filter: grayscale(0%);
+      transform: scale(1.02);
+    }
+
+    .gallery-img.active {
+      width: 520px;
+      filter: grayscale(0%);
+    }
+
+    /* ── MODPACK ── */
+    .modpack-section {
+      background: var(--dark3);
+    }
+
+    .modpack-card {
+      background: var(--dark);
+      border: 1px solid rgba(240,165,0,0.15);
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modpack-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .modpack-info h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+    }
+
+    .modpack-info p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    .modpack-badge {
+      display: inline-block;
+      background: rgba(240,165,0,0.12);
+      border: 1px solid rgba(240,165,0,0.3);
+      color: var(--gold);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      margin-bottom: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(240,165,0,0.1);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── RAIL DIVIDER ── */
+    .rail-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(240,165,0,0.3), transparent);
+      margin: 0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ── REVEAL ON SCROLL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav ul { gap: 1rem; }
+      nav a { font-size: 0.72rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .gallery-img { width: 260px; height: 170px; }
+      .gallery-img.active { width: 320px; }
+      .modpack-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <nav>
+      <a href="#" class="nav-logo">Create:<span> Unlimited Rails</span></a>
+      <ul>
+        <li><a href="ueberuns.html" data-de="Über uns" data-en="About Us">Über uns</a></li>
+        <li><a href="bewerbung.html" data-de="Bewerben" data-en="Apply">Bewerben</a></li>
+        <li><a href="http://88.198.65.212:25628/" data-de="Karten" data-en="Maps">Karten</a></li>
+        <li><a href="" data-de="Baustandards" data-en="Build Standards">Baustandards</a></li>
+        <li><a href="#modpack" data-de="Modpack" data-en="Modpack">Modpack</a></li>
+        <li><a href="https://discord.gg/HPUQEUDn6g" target="_blank">Discord</a></li>
+        <li><button id="langToggle" class="lang-btn">DE</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-de="Minecraft · Create Mod · Multiplayer" data-en="Minecraft · Create Mod · Multiplayer">Minecraft · Create Mod · Multiplayer</p>
+      <h1 class="hero-title" data-de="Create:<br><em>Unlimited</em><br>Rails" data-en="Create:<br><em>Unlimited</em><br>Rails">Create:<br><em>Unlimited</em><br>Rails</h1>
+      <p class="hero-sub" data-de="Elite Create-basiertes Bauen auf Schienen" data-en="Elite Create based building on rails">Elite Create-basiertes Bauen auf Schienen</p>
+      <div class="hero-cta">
+        <a href="#modpack" class="btn-primary" data-de="Modpack laden" data-en="Download Modpack">Modpack laden</a>
+        <a href="https://discord.gg/HPUQEUDn6g" target="_blank" class="btn-secondary" data-de="Discord beitreten" data-en="Join Discord">Discord beitreten</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar reveal">
+    <div class="stats-inner">
+      <div class="stat">
+        <span class="stat-val">1.20</span>
+        <span class="stat-label" data-de="Minecraft Version" data-en="Minecraft Version">Minecraft Version</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">Create</span>
+        <span class="stat-label" data-de="Kern-Mod" data-en="Core Mod">Kern-Mod</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">24/7</span>
+        <span class="stat-label" data-de="Server online" data-en="Server Online">Server online</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">Smp</span>
+        <span class="stat-label" data-de="Spielmodus" data-en="Game Mode">Spielmodus</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rail-divider"></div>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="section-label" data-de="Unser Projekt" data-en="Our Project">Unser Projekt</p>
+        <h2 class="section-title" data-de="Bauen ohne Grenzen" data-en="Build without limits">Bauen ohne Grenzen</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p data-de="Create: Unlimited Rails ist ein Minecraft-Server, der sich auf hochqualitatives, Create-Mod-basiertes Bauen spezialisiert. Unser Schwerpunkt liegt auf durchdachten Eisenbahnsystemen und industriellen Anlagen." data-en="Create: Unlimited Rails is a Minecraft server specialising in high-quality, Create Mod-based building. Our focus is on thoughtful railway systems and industrial complexes.">
+            Create: Unlimited Rails ist ein Minecraft-Server, der sich auf hochqualitatives, Create-Mod-basiertes Bauen spezialisiert. Unser Schwerpunkt liegt auf durchdachten Eisenbahnsystemen und industriellen Anlagen.
+          </p>
+          <p data-de="Wir suchen engagierte Spieler, die ihr Können zeigen und gemeinsam eine der besten Create-Welten aufbauen wollen." data-en="We're looking for dedicated players who want to showcase their skills and build one of the best Create worlds together.">
+            Wir suchen engagierte Spieler, die ihr Können zeigen und gemeinsam eine der besten Create-Welten aufbauen wollen.
+          </p>
+          <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="bewerbung.html" class="btn-primary" style="font-size:0.8rem; padding:10px 22px;" data-de="Jetzt bewerben" data-en="Apply now">Jetzt bewerben</a>
+            <a href="ueberuns.html" class="btn-secondary" style="font-size:0.8rem; padding:10px 22px;" data-de="Mehr erfahren" data-en="Learn more">Mehr erfahren</a>
+          </div>
+        </div>
+        <div class="about-image reveal">
+          <img src="https://schnecke325.github.io/images/foto3.png" alt="Server Screenshot" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rail-divider"></div>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="section-inner" style="padding-bottom: 2rem;">
+      <div class="reveal">
+        <p class="section-label" data-de="Galerie" data-en="Gallery">Galerie</p>
+        <h2 class="section-title" data-de="Unsere Welt" data-en="Our World">Unsere Welt</h2>
+      </div>
+    </div>
+    <div class="gallery-track" id="galleryTrack" style="padding-bottom: 4rem; padding-top: 1rem;">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <div class="rail-divider"></div>
+
+  <!-- MODPACK -->
+  <section class="modpack-section" id="modpack">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="section-label" data-de="Download" data-en="Download">Download</p>
+        <h2 class="section-title" data-de="Offizielles Modpack" data-en="Official Modpack">Offizielles Modpack</h2>
+      </div>
+      <div class="modpack-card reveal">
+        <div class="modpack-info">
+          <span class="modpack-badge" data-de="Aktuell · v6" data-en="Latest · v6">Aktuell · v6</span>
+          <h4 data-de="United Rails Modpack" data-en="United Rails Modpack">United Rails Modpack</h4>
+          <p data-de="Alle nötigen Mods in einem Paket – einfach herunterladen, in den Launcher importieren und losspielen." data-en="All required mods in one package – download, import into your launcher and start playing.">
+            Alle nötigen Mods in einem Paket – einfach herunterladen, in den Launcher importieren und losspielen.
+          </p>
+        </div>
+        <a href="https://www.mediafire.com/file/z01yskr6scir5xt/United-Rails_-6.zip/file" target="_blank" class="btn-primary" data-de="📦 Modpack herunterladen" data-en="📦 Download Modpack">📦 Modpack herunterladen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Create: Unlimited Rails &nbsp;·&nbsp; <a href="https://discord.gg/HPUQEUDn6g" target="_blank">Discord</a> &nbsp;·&nbsp; <a href="http://88.198.65.212:25628/">Karten</a></p>
+  </footer>
+
+  <script>
+    /* Hero Ken-Burns */
+    const bg = document.getElementById('heroBg');
+    window.addEventListener('load', () => bg.classList.add('loaded'));
+
+    /* Gallery */
+    const images = [
+      "https://schnecke325.github.io/images/Foto1.png",
+      "https://schnecke325.github.io/images/foto2.png",
+      "https://schnecke325.github.io/images/foto3.png",
+      "https://schnecke325.github.io/images/foto4.png",
+      "https://schnecke325.github.io/images/foto5.png",
+      "https://schnecke325.github.io/images/foto6.png",
+      "https://schnecke325.github.io/images/foto7.png",
+      "https://schnecke325.github.io/images/foto8.png",
+      "https://schnecke325.github.io/images/foto9.png",
+      "https://schnecke325.github.io/images/foto10.png",
+    ];
+
+    const track = document.getElementById('galleryTrack');
+    let activeIdx = 2;
+
+    function buildGallery() {
+      track.innerHTML = '';
+      images.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'gallery-img' + (i === activeIdx ? ' active' : '');
+        img.alt = 'Screenshot ' + (i + 1);
+        img.loading = 'lazy';
+        img.addEventListener('click', () => {
+          activeIdx = i;
+          document.querySelectorAll('.gallery-img').forEach((el, j) => {
+            el.classList.toggle('active', j === i);
+          });
+        });
+        track.appendChild(img);
+      });
+    }
+
+    buildGallery();
+
+    /* Auto-rotate gallery */
+    setInterval(() => {
+      activeIdx = (activeIdx + 1) % images.length;
+      document.querySelectorAll('.gallery-img').forEach((el, j) => {
+        el.classList.toggle('active', j === activeIdx);
+      });
+    }, 4000);
+
+    /* Scroll reveal */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+
+    /* Language toggle */
+    const langBtn = document.getElementById('langToggle');
+    let lang = 'de';
+
+    langBtn.addEventListener('click', () => {
+      lang = lang === 'de' ? 'en' : 'de';
+      langBtn.textContent = lang.toUpperCase();
+      document.querySelectorAll('[data-de]').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H4') {
+          el.innerHTML = val;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
