@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galerie · Create: Unlimited Rails</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #f0a500;
+      --dark: #0a0a0b;
+      --dark2: #111113;
+      --dark3: #1a1a1e;
+      --text: #e8e6e0;
+      --muted: #888680;
+      --border: rgba(240,165,0,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        90deg, transparent, transparent 48px,
+        rgba(240,165,0,0.018) 48px, rgba(240,165,0,0.018) 50px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,11,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-back {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(240,165,0,0.35);
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn:hover { background: var(--gold); color: #000; }
+
+    /* PAGE HEADER */
+    .page-header {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 4rem 2rem 2.5rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .page-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .photo-count {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-top: 0.5rem;
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem 2rem;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 7px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: rgba(240,165,0,0.3); color: var(--text); }
+    .filter-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #000;
+      font-weight: 500;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* MASONRY GRID */
+    .masonry-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 2rem 5rem;
+    }
+
+    .masonry-grid {
+      columns: 5;
+      column-gap: 10px;
+    }
+
+    @media (max-width: 1300px) { .masonry-grid { columns: 4; } }
+    @media (max-width: 1000px) { .masonry-grid { columns: 3; } }
+    @media (max-width: 640px)  { .masonry-grid { columns: 2; } }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--dark2);
+    }
+
+    .masonry-item img {
+      width: 100%;
+      display: block;
+      filter: brightness(0.88);
+      transition: all 0.4s ease;
+    }
+
+    .masonry-item:hover img {
+      filter: brightness(1.05);
+      transform: scale(1.04);
+    }
+
+    /* Hover overlay */
+    .masonry-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: 12px;
+    }
+    .masonry-item:hover .masonry-overlay { opacity: 1; }
+
+    .masonry-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .masonry-zoom {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(240,165,0,0.9);
+      color: #000;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .masonry-item:hover .masonry-zoom { opacity: 1; }
+
+    /* Skeleton loader */
+    .masonry-item.loading {
+      background: var(--dark3);
+      min-height: 180px;
+    }
+    .masonry-item.loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* No results */
+    .no-results {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 4rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.94);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .lightbox.open { display: flex; }
+
+    .lb-img-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 90vw;
+      max-height: 85vh;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 82vh;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+
+    .lb-counter {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 1.1rem;
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .lightbox-close:hover { border-color: var(--gold); color: var(--gold); }
+
+    .lightbox-prev, .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 1.4rem;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+    .lightbox-prev:hover, .lightbox-next:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* SCROLL TO TOP */
+    .scroll-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 42px;
+      height: 42px;
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+    }
+    .scroll-top.visible { opacity: 1; pointer-events: all; }
+    .scroll-top:hover { background: var(--gold); color: #000; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="index.html" class="nav-logo">Create:<span> Unlimited Rails</span></a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-back" data-de="← Startseite" data-en="← Home">← Startseite</a>
+      <button class="lang-btn" id="langBtn">DE</button>
+    </div>
+  </nav>
+</header>
+
+<div class="page-header reveal">
+  <div>
+    <p class="page-eyebrow" data-de="Unsere Welt" data-en="Our World">Unsere Welt</p>
+    <h1 class="page-title" data-de="Galerie" data-en="Gallery">Galerie</h1>
+    <p class="photo-count" id="photoCount"></p>
+  </div>
+</div>
+
+<div class="filter-bar reveal">
+  <button class="filter-btn active" data-filter="all" data-de="Alle" data-en="All">Alle</button>
+  <button class="filter-btn" data-filter="builds" data-de="Bauwerke" data-en="Builds">Bauwerke</button>
+  <button class="filter-btn" data-filter="vehicles" data-de="Fahrzeuge" data-en="Vehicles">Fahrzeuge</button>
+  <button class="filter-btn" data-filter="landscape" data-de="Landschaft" data-en="Landscape">Landschaft</button>
+</div>
+
+<div class="divider"></div>
+
+<div class="masonry-wrap">
+  <div class="masonry-grid" id="masonryGrid"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">✕</button>
+  <button class="lightbox-prev" id="lbPrev">‹</button>
+  <div class="lb-img-wrap">
+    <img id="lbImg" src="" alt="" />
+  </div>
+  <div class="lb-counter" id="lbCounter"></div>
+  <button class="lightbox-next" id="lbNext">›</button>
+</div>
+
+<button class="scroll-top" id="scrollTop" title="Nach oben">↑</button>
+
+<footer>
+  <p>Create: Unlimited Rails &nbsp;·&nbsp; <a href="https://discord.gg/HPUQEUDn6g" target="_blank">Discord</a> &nbsp;·&nbsp; <a href="index.html" data-de="← Startseite" data-en="← Home">← Startseite</a></p>
+</footer>
+
+<script>
+  /* ── ALL IMAGES ──────────────────────────────────────
+     Füge hier weitere Bilder hinzu!
+     Jedes Objekt hat:
+       src:      URL des Bildes
+       category: 'builds' | 'vehicles' | 'landscape' | 'all'
+       label:    Kurzbeschreibung (DE)
+       labelEn:  Kurzbeschreibung (EN)
+  ─────────────────────────────────────────────────── */
+  const ALL_IMAGES = [
+    { src: "https://schnecke325.github.io/images/Foto1.png",  category: "builds",    label: "Bauwerk",   labelEn: "Build" },
+    { src: "https://schnecke325.github.io/images/foto2.png",  category: "landscape", label: "Landschaft",labelEn: "Landscape" },
+    { src: "https://schnecke325.github.io/images/foto3.png",  category: "builds",    label: "Bauwerk",   labelEn: "Build" },
+    { src: "https://schnecke325.github.io/images/foto4.png",  category: "vehicles",  label: "Fahrzeug",  labelEn: "Vehicle" },
+    { src: "https://schnecke325.github.io/images/foto5.png",  category: "builds",    label: "Bauwerk",   labelEn: "Build" },
+    { src: "https://schnecke325.github.io/images/foto6.png",  category: "landscape", label: "Landschaft",labelEn: "Landscape" },
+    { src: "https://schnecke325.github.io/images/foto7.png",  category: "vehicles",  label: "Fahrzeug",  labelEn: "Vehicle" },
+    { src: "https://schnecke325.github.io/images/foto8.png",  category: "builds",    label: "Bauwerk",   labelEn: "Build" },
+    { src: "https://schnecke325.github.io/images/foto9.png",  category: "landscape", label: "Landschaft",labelEn: "Landscape" },
+    { src: "https://schnecke325.github.io/images/foto10.png", category: "builds",    label: "Bauwerk",   labelEn: "Build" },
+  ];
+
+  let lang          = 'de';
+  let activeFilter  = 'all';
+  let currentImgs   = [];
+  let lbIndex       = 0;
+
+  /* ── FILTER ── */
+  function filteredImages() {
+    return activeFilter === 'all' ? ALL_IMAGES : ALL_IMAGES.filter(i => i.category === activeFilter);
+  }
+
+  /* ── RENDER GRID ── */
+  function renderGrid() {
+    const grid = document.getElementById('masonryGrid');
+    grid.innerHTML = '';
+    currentImgs = filteredImages();
+
+    document.getElementById('photoCount').textContent =
+      lang === 'de' ? `${currentImgs.length} Bilder` : `${currentImgs.length} photos`;
+
+    if (!currentImgs.length) {
+      grid.innerHTML = `<div class="no-results">${lang === 'de' ? 'Keine Bilder in dieser Kategorie.' : 'No images in this category.'}</div>`;
+      return;
+    }
+
+    currentImgs.forEach((img, i) => {
+      const item = document.createElement('div');
+      item.className = 'masonry-item';
+      item.dataset.index = i;
+      item.innerHTML = `
+        <img src="${img.src}" alt="${lang === 'de' ? img.label : img.labelEn}" loading="lazy" />
+        <div class="masonry-overlay">
+          <span class="masonry-label">${lang === 'de' ? img.label : img.labelEn}</span>
+        </div>
+        <div class="masonry-zoom">⤢</div>
+      `;
+      item.addEventListener('click', () => openLightbox(i));
+      grid.appendChild(item);
+    });
+  }
+
+  /* ── LIGHTBOX ── */
+  const lightbox  = document.getElementById('lightbox');
+  const lbImg     = document.getElementById('lbImg');
+  const lbCounter = document.getElementById('lbCounter');
+
+  function openLightbox(i) {
+    lbIndex = i;
+    lbImg.src = currentImgs[i].src;
+    lbCounter.textContent = `${i + 1} / ${currentImgs.length}`;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function lbMove(dir) {
+    lbIndex = (lbIndex + dir + currentImgs.length) % currentImgs.length;
+    lbImg.src = currentImgs[lbIndex].src;
+    lbCounter.textContent = `${lbIndex + 1} / ${currentImgs.length}`;
+  }
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', () => lbMove(-1));
+  document.getElementById('lbNext').addEventListener('click', () => lbMove(1));
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lbMove(-1);
+    if (e.key === 'ArrowRight') lbMove(1);
+  });
+
+  /* ── FILTER BUTTONS ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid();
+    });
+  });
+
+  /* ── LANGUAGE ── */
+  function applyLang() {
+    document.getElementById('langBtn').textContent = lang.toUpperCase();
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-de]').forEach(el => {
+      el.textContent = el.getAttribute('data-' + lang);
+    });
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.textContent = btn.getAttribute('data-' + lang);
+    });
+    renderGrid();
+  }
+
+  document.getElementById('langBtn').addEventListener('click', () => {
+    lang = lang === 'de' ? 'en' : 'de';
+    applyLang();
+  });
+
+  /* ── SCROLL REVEAL ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+
+  /* ── SCROLL TO TOP ── */
+  const scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+  });
+  scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* ── BOOT ── */
+  renderGrid();
+</script>
+</body>
+</html>
