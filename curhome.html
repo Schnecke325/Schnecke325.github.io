@@ -352,37 +352,151 @@
       z-index: -1;
     }
 
-    /* ── GALLERY ── */
+    /* ── GALLERY (Pinterest Masonry) ── */
     .gallery-section {
       background: var(--dark2);
-      overflow: hidden;
     }
 
-    .gallery-track {
+    .masonry-grid {
+      columns: 4;
+      column-gap: 10px;
+      padding: 0 2rem 2rem;
+    }
+
+    @media (max-width: 1100px) { .masonry-grid { columns: 3; } }
+    @media (max-width: 720px)  { .masonry-grid { columns: 2; } }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .masonry-item img {
+      width: 100%;
+      display: block;
+      filter: brightness(0.88);
+      transition: all 0.4s ease;
+    }
+
+    .masonry-item:hover img {
+      filter: brightness(1);
+      transform: scale(1.03);
+    }
+
+    .masonry-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .masonry-item:hover::after { opacity: 1; }
+
+    .masonry-item .zoom-icon {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 2;
+      background: rgba(240,165,0,0.9);
+      color: #000;
+      width: 28px;
+      height: 28px;
       display: flex;
-      gap: 1rem;
-      overflow: hidden;
-      padding: 0 2rem;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
-    .gallery-img {
-      flex: 0 0 auto;
-      width: 340px;
-      height: 220px;
-      object-fit: cover;
-      filter: grayscale(20%);
-      transition: all 0.5s ease;
+    .masonry-item:hover .zoom-icon { opacity: 1; }
+
+    .gallery-footer {
+      text-align: center;
+      padding: 2rem 2rem 4rem;
     }
 
-    .gallery-img:hover {
-      filter: grayscale(0%);
-      transform: scale(1.02);
+    .btn-show-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 1px solid rgba(240,165,0,0.35);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 13px 32px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
     }
 
-    .gallery-img.active {
-      width: 520px;
-      filter: grayscale(0%);
+    .btn-show-more:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-1px);
     }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 1.2rem;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s;
+    }
+    .lightbox-close:hover { border-color: var(--gold); color: var(--gold); }
+    .lightbox-prev, .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 1.2rem;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+    .lightbox-prev:hover, .lightbox-next:hover { border-color: var(--gold); color: var(--gold); }
 
     /* ── MODPACK ── */
     .modpack-section {
@@ -561,7 +675,7 @@
         <span style="font-size:0.7rem;color:var(--muted);margin-top:4px;" id="serverPlayers"></span>
       </div>
       <div class="stat">
-        <span class="stat-val">Creative</span>
+        <span class="stat-val">Smp</span>
         <span class="stat-label" data-de="Spielmodus" data-en="Game Mode">Spielmodus</span>
       </div>
     </div>
@@ -606,10 +720,21 @@
         <h2 class="section-title" data-de="Unsere Welt" data-en="Our World">Unsere Welt</h2>
       </div>
     </div>
-    <div class="gallery-track" id="galleryTrack" style="padding-bottom: 4rem; padding-top: 1rem;">
-      <!-- filled by JS -->
+    <div class="masonry-grid reveal" id="masonryGrid">
+      <!-- filled by JS – first 8 images shown as preview -->
+    </div>
+    <div class="gallery-footer reveal">
+      <a href="galerie.html" class="btn-show-more" data-de="Alle Bilder ansehen →" data-en="View all images →">Alle Bilder ansehen →</a>
     </div>
   </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose">✕</button>
+    <button class="lightbox-prev" id="lbPrev">‹</button>
+    <img id="lbImg" src="" alt="" />
+    <button class="lightbox-next" id="lbNext">›</button>
+  </div>
 
   <div class="rail-divider"></div>
 
@@ -643,7 +768,7 @@
     const bg = document.getElementById('heroBg');
     window.addEventListener('load', () => bg.classList.add('loaded'));
 
-    /* Gallery */
+    /* Gallery Images */
     const images = [
       "https://schnecke325.github.io/images/Foto1.png",
       "https://schnecke325.github.io/images/foto2.png",
@@ -657,36 +782,49 @@
       "https://schnecke325.github.io/images/foto10.png",
     ];
 
-    const track = document.getElementById('galleryTrack');
-    let activeIdx = 2;
+    /* Masonry – show first 8 as preview */
+    const previewImages = images.slice(0, 8);
+    const grid = document.getElementById('masonryGrid');
 
-    function buildGallery() {
-      track.innerHTML = '';
-      images.forEach((src, i) => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.className = 'gallery-img' + (i === activeIdx ? ' active' : '');
-        img.alt = 'Screenshot ' + (i + 1);
-        img.loading = 'lazy';
-        img.addEventListener('click', () => {
-          activeIdx = i;
-          document.querySelectorAll('.gallery-img').forEach((el, j) => {
-            el.classList.toggle('active', j === i);
-          });
-        });
-        track.appendChild(img);
-      });
+    previewImages.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'masonry-item';
+      item.dataset.index = i;
+      item.innerHTML = `<img src="${src}" alt="Screenshot ${i+1}" loading="lazy" /><div class="zoom-icon">⤢</div>`;
+      item.addEventListener('click', () => openLightbox(i));
+      grid.appendChild(item);
+    });
+
+    /* Lightbox */
+    let lbIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lbImg');
+
+    function openLightbox(i) {
+      lbIndex = i;
+      lbImg.src = previewImages[i];
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lbMove(dir) {
+      lbIndex = (lbIndex + dir + previewImages.length) % previewImages.length;
+      lbImg.src = previewImages[lbIndex];
     }
 
-    buildGallery();
-
-    /* Auto-rotate gallery */
-    setInterval(() => {
-      activeIdx = (activeIdx + 1) % images.length;
-      document.querySelectorAll('.gallery-img').forEach((el, j) => {
-        el.classList.toggle('active', j === activeIdx);
-      });
-    }, 4000);
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    document.getElementById('lbPrev').addEventListener('click', () => lbMove(-1));
+    document.getElementById('lbNext').addEventListener('click', () => lbMove(1));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lbMove(-1);
+      if (e.key === 'ArrowRight') lbMove(1);
+    });
 
     /* Scroll reveal */
     const revealEls = document.querySelectorAll('.reveal');
