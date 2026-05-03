@@ -243,7 +243,7 @@
 
     <div class="map-card" data-feature
       data-abbr="LN" data-name-de="Liniennetz" data-name-en="Route Network"
-      data-maps='[{"icon":"🚆","label-de":"Gesamtnetz","label-en":"Full Network","img":null,"url":"#LN_GESAMT"},{"icon":"🚉","label-de":"Bahnhofsplan","label-en":"Station Plan","img":null,"url":"#LN_BAHNHOF"}]'>
+      data-maps='[{"icon":"","label-de":"Gesamtnetz","label-en":"Full Network","img":null,"url":"#LN_GESAMT"},{"icon":"","label-de":"Bahnhofsplan","label-en":"Station Plan","img":null,"url":"#LN_BAHNHOF"}]'>
       <div class="map-card-label">
         <span class="map-card-title" data-de="Liniennetz" data-en="Route Network">Liniennetz</span>
         <span class="map-card-badge" data-de="Netz" data-en="Network">Netz</span>
@@ -258,7 +258,7 @@
 
     <div class="map-card" data-feature
       data-abbr="3D" data-name-de="3D-Karte" data-name-en="3D Map"
-      data-maps='[{"icon":"🏔","label-de":"3D Weltansicht","label-en":"3D World View","img":null,"url":"#3D_WORLD"},{"icon":"🔭","label-de":"Vogelperspektive","label-en":"Bird'\''s Eye","img":null,"url":"#3D_BIRD"}]'>
+      data-maps='[{"icon":"","label-de":"3D Weltansicht","label-en":"3D World View","img":null,"url":"#3D_WORLD"},{"icon":"🔭","label-de":"Vogelperspektive","label-en":"Bird'\''s Eye","img":null,"url":"#3D_BIRD"}]'>
       <div class="map-card-label">
         <span class="map-card-title">3D Map</span>
         <span class="map-card-badge">3D</span>
@@ -414,7 +414,7 @@ function openPopup(abbr, name, maps, isFeature) {
     maps.forEach(m => {
       const labelKey  = m.labelDe !== undefined ? (lang === 'de' ? m.labelDe : m.labelEn) : (lang === 'de' ? m['label-de'] : m['label-en']);
       const imgSrc    = m.img || null;
-      const icon      = m.icon || '🗺';
+      const icon      = m.icon || '';
       const url       = m.url || '#';
       const isSoon    = !url || url.startsWith('#');
 
