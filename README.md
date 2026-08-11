@@ -1,3 +1,11 @@
+© 2026 Create: Unlimited Rails
+All rights reserved.
+
+The source code of this website may be viewed for reference,
+but may not be copied, modified, redistributed, or used in other projects
+without explicit permission from the authors.
+
+
 | [Ukraine Russland Konflikt](https://schnecke325.github.io/) | [China Indien Grenzkonflikt l](https://schnecke325.github.io/) |
 | ------------- | ------------- |
 | [![](https://schnecke325.github.io/URU.jpg)](https://schnecke325.github.io/)  | [![](https://schnecke325.github.io/CIN.jpg)](https://schnecke325.github.io/) |
