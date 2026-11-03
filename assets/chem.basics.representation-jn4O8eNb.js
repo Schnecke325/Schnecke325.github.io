@@ -1,10 +1,10 @@
 const w=2,e="chem.basics.representation",n="Fachsprache und Stoff-Teilchen-Modell",i="In der Chemie beschreibst du dieselbe Situation auf mehreren Ebenen: als Beobachtung, mit einem Teilchenmodell und in chemischer Symbolsprache.",A=10,t="review",r={label:"supplementary",basis:"cross-cutting",note:"Querschnittsgrundlage für alle Themenfelder; die Prüfungsanalyse weist dafür keine eigenständige Themenhäufigkeit aus."},s=[{sourceId:"kcgo-chemie-2026-04",fieldId:"E.1",status:"required"},{sourceId:"kcgo-chemie-2026-04",fieldId:"E.2",status:"required"},{sourceId:"kcgo-chemie-2026-04",fieldId:"E.3",status:"required"}],a=[],o=[{id:"chem.basics.representation.goal.levels",statement:"Ich kann Beobachtungen, Teilchenmodell und chemische Symbolsprache unterscheiden und zwischen ihnen wechseln.",competencies:["S","K"],operators:["beschreiben","darstellen","überführen"]},{id:"chem.basics.representation.goal.formula",statement:"Ich kann Summen-, Valenzstrich-, Lewis- und Skelettformeln passend zur Fragestellung lesen und zeichnen.",competencies:["S","K"],operators:["zeichnen","beschriften"]},{id:"chem.basics.representation.goal.equations",statement:"Ich kann Reaktionsgleichungen ausgleichen und Atomerhaltung sowie Ladungserhaltung überprüfen.",competencies:["S","E"],operators:["formulieren","überprüfen"]},{id:"chem.basics.representation.goal.models",statement:"Ich kann erklären, welche Beobachtung ein Modell erklärt und wo seine Aussage endet.",competencies:["E","B"],operators:["erläutern","beurteilen"]}],l="In der Chemie beschreibst du dieselbe Situation auf mehreren Ebenen. Du kannst zum Beispiel eine Farbänderung beobachten, sie mit Teilchen erklären und den Vorgang als Reaktionsgleichung darstellen. Diese Ebenen ergänzen sich, beantworten aber unterschiedliche Fragen. Wenn du sie sauber trennst, werden Erklärungen und Abiturantworten klarer.",c=`### 1. Beobachtung, Erklärung und Modell
 
-Auf der **Stoffebene** beschreibst du, was du mit deinen Sinnen oder Messgeräten feststellst: Eine Lösung färbt sich, ein Niederschlag entsteht oder ein Gasvolumen nimmt zu. Formuliere zunächst nur die Beobachtung. Eine Deutung kommt danach.
+Auf der Stoffebene beschreibst du, was du mit deinen Sinnen oder Messgeräten feststellst: Eine Lösung färbt sich, ein Niederschlag entsteht oder ein Gasvolumen nimmt zu. Formuliere zunächst nur die Beobachtung. Eine Deutung kommt danach.
 
-Auf der **Teilchenebene** erklärst du den Vorgang mit Atomen, Molekülen oder Ionen. Teilchen sind nicht direkt sichtbar. Das Teilchenbild ist ein Modell, das Beobachtungen verständlich macht.
+Auf der Teilchenebene erklärst du den Vorgang mit Atomen, Molekülen oder Ionen. Teilchen sind nicht direkt sichtbar. Das Teilchenbild ist ein Modell, das Beobachtungen verständlich macht.
 
-Auf der **Symbolebene** nutzt du Formeln, Reaktionsgleichungen und Fachzeichen. Eine Gleichung fasst Stoffumwandlungen knapp zusammen. Sie zeigt aber nicht automatisch den Reaktionsmechanismus oder alle Bedingungen.
+Auf der Symbolebene nutzt du Formeln, Reaktionsgleichungen und Fachzeichen. Eine Gleichung fasst Stoffumwandlungen knapp zusammen. Sie zeigt aber nicht automatisch den Reaktionsmechanismus oder alle Bedingungen.
 
 ### 2. Formeln lesen und zeichnen
 
@@ -16,7 +16,7 @@ Wähle die Darstellung passend zur Frage. Für die Zusammensetzung reicht oft di
 
 ### 3. Reaktionsgleichungen aufstellen
 
-Schreibe zuerst die Formeln der Ausgangsstoffe und Produkte auf. Gleiche dann die Anzahl jedes Elements mit **Koeffizienten** vor den Formeln aus. Tiefgestellte Zahlen veränderst du nicht: Sie gehören zur Identität des Stoffes.
+Schreibe zuerst die Formeln der Ausgangsstoffe und Produkte auf. Gleiche dann die Anzahl jedes Elements mit Koeffizienten vor den Formeln aus. Tiefgestellte Zahlen veränderst du nicht: Sie gehören zur Identität des Stoffes.
 
 Bei einer vollständigen Stoffgleichung müssen Atome erhalten bleiben. In einer Ionengleichung müssen zusätzlich die Gesamtladungen auf beiden Seiten übereinstimmen. Markiere bei Bedarf Zustände wie (s), (l), (g) und (aq). Bedingungen wie Temperatur oder Katalysator kannst du am Reaktionspfeil notieren.
 

@@ -6,7 +6,7 @@ Eine Reaktionsgleichung fasst Ausgangsstoffe und Produkte zusammen. Der Mechanis
 
 Bei der radikalischen Substitution wird in einem Alkan ein H-Atom durch ein Halogenatom ersetzt. Licht kann eine Halogen-Halogen-Bindung homolytisch spalten. Jedes Atom erhält dabei ein Bindungselektron; es entstehen Radikale.
 
-Die Kettenreaktion umfasst drei Phasen: **Initiierung** erzeugt Radikale, **Kettenfortpflanzung** verbraucht ein Radikal und erzeugt ein neues, **Kettenabbruch** entfernt Radikale durch ihre Verbindung. Bei Methan und Chlor entsteht unter geeigneten Bedingungen Chlormethan und Chlorwasserstoff. Mehrfachsubstitution kann weitere Produkte liefern.
+Die Kettenreaktion umfasst drei Phasen: Initiierung erzeugt Radikale, Kettenfortpflanzung verbraucht ein Radikal und erzeugt ein neues, Kettenabbruch entfernt Radikale durch ihre Verbindung. Bei Methan und Chlor entsteht unter geeigneten Bedingungen Chlormethan und Chlorwasserstoff. Mehrfachsubstitution kann weitere Produkte liefern.
 
 ### 3. Elektrophile Addition
 

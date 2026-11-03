@@ -2,7 +2,7 @@ const f=2,e="chem.q3.2.titration",n="Titrationen und quantitative Analyse",t="Nu
 
 Du gibst eine Maßlösung mit bekannter Konzentration schrittweise zu einer Probelösung. Ein Indikator zeigt durch einen Farbumschlag einen pH-Bereich an; ein pH-Meter misst den pH direkt. Das zugegebene Volumen hältst du fest.
 
-Der **Äquivalenzpunkt** ist erreicht, wenn Säure und Base entsprechend der ausgeglichenen Reaktionsgleichung umgesetzt sind. Der **Endpunkt** ist der beobachtete Umschlag des Indikators oder ein festgelegter Messpunkt. Beide liegen idealerweise nahe beieinander, sind aber nicht grundsätzlich identisch.
+Der Äquivalenzpunkt ist erreicht, wenn Säure und Base entsprechend der ausgeglichenen Reaktionsgleichung umgesetzt sind. Der Endpunkt ist der beobachtete Umschlag des Indikators oder ein festgelegter Messpunkt. Beide liegen idealerweise nahe beieinander, sind aber nicht grundsätzlich identisch.
 
 ### 2. Konzentration berechnen
 

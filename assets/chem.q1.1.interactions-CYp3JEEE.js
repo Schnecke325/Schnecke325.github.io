@@ -14,10 +14,10 @@ CO₂ besitzt polare C=O-Bindungen, ist aber linear und symmetrisch. Die Dipole 
 
 Zwischen Molekülen wirken Anziehungskräfte. Sie sind meist schwächer als Bindungen innerhalb eines Moleküls, beeinflussen aber Eigenschaften wie Siedepunkt und Löslichkeit.
 
-- **Dispersionskräfte** entstehen durch momentane und induzierte Dipole. Sie wirken zwischen allen Teilchen und werden bei größeren, stärker polarisierbaren Elektronenhüllen meist stärker.
-- **Dipol-Dipol-Wechselwirkungen** treten zwischen permanenten Dipolen auf. Die δ⁺-Seite eines Moleküls zieht die δ⁻-Seite eines anderen an.
-- **Wasserstoffbrücken** sind besonders starke Dipol-Wechselwirkungen. Sie können entstehen, wenn H an N, O oder F gebunden ist und mit einem freien Elektronenpaar an N, O oder F eines Nachbarteilchens wechselwirkt.
-- **Ion-Dipol-Wechselwirkungen** treten zum Beispiel auf, wenn Ionen von polaren Wassermolekülen umgeben werden. Diese Hydratisierung kann das Lösen eines Salzes unterstützen.
+- Dispersionskräfte entstehen durch momentane und induzierte Dipole. Sie wirken zwischen allen Teilchen und werden bei größeren, stärker polarisierbaren Elektronenhüllen meist stärker.
+- Dipol-Dipol-Wechselwirkungen treten zwischen permanenten Dipolen auf. Die δ⁺-Seite eines Moleküls zieht die δ⁻-Seite eines anderen an.
+- Wasserstoffbrücken sind besonders starke Dipol-Wechselwirkungen. Sie können entstehen, wenn H an N, O oder F gebunden ist und mit einem freien Elektronenpaar an N, O oder F eines Nachbarteilchens wechselwirkt.
+- Ion-Dipol-Wechselwirkungen treten zum Beispiel auf, wenn Ionen von polaren Wassermolekülen umgeben werden. Diese Hydratisierung kann das Lösen eines Salzes unterstützen.
 
 ### 4. Wechselwirkungen und Stoffeigenschaften
 

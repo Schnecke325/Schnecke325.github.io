@@ -14,7 +14,7 @@ Beim Verdünnen bleibt die Stoffmenge des gelösten Stoffes gleich. Deshalb gilt
 
 Die Koeffizienten einer ausgeglichenen Reaktionsgleichung geben das Stoffmengenverhältnis an. Bei N₂ + 3 H₂ → 2 NH₃ reagieren zum Beispiel 1 mol N₂ mit 3 mol H₂; es entstehen 2 mol NH₃.
 
-Vergleiche die vorhandenen Stoffmengen mit diesem Verhältnis. Das Edukt, das entsprechend der Gleichung zuerst aufgebraucht wäre, heißt **limitierendes Edukt**. Es begrenzt die theoretisch mögliche Produktmenge. Bestimme es, bevor du die Produktmenge berechnest.
+Vergleiche die vorhandenen Stoffmengen mit diesem Verhältnis. Das Edukt, das entsprechend der Gleichung zuerst aufgebraucht wäre, heißt limitierendes Edukt. Es begrenzt die theoretisch mögliche Produktmenge. Bestimme es, bevor du die Produktmenge berechnest.
 
 ### 4. Gase und Einheiten
 
